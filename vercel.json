@@ -1,12 +1,1 @@
-{
-  "buildCommand": "cd frontend && npm ci --legacy-peer-deps && npx react-scripts build",
-  "outputDirectory": "frontend/build",
-  "installCommand": "echo 'Skip'",
-  "framework": null,
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ]
-}
+{}
