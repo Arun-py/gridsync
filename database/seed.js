@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://prometheus140925_db_user:YOUR_PASSWORD@cluster0.hfwbdpi.mongodb.net/solar_microgrid?retryWrites=true&w=majority&appName=Cluster0', {
+mongoose.connect('mongodb+srv://prometheus140925_db_user:wkDGjpvOnQJ7gCW9@cluster0.hfwbdpi.mongodb.net/gridsync?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

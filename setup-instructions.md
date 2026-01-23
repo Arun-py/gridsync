@@ -13,7 +13,7 @@
    - Add your current IP or use 0.0.0.0/0 for all IPs (development only)
 
 2. **Get Connection String**:
-   - Your current string: `mongodb+srv://prometheus140925_db_user:YOUR_PASSWORD@cluster0.hfwbdpi.mongodb.net/solar_microgrid?retryWrites=true&w=majority&appName=Cluster0`
+   - Your current string: `mongodb+srv://prometheus140925_db_user:wkDGjpvOnQJ7gCW9@cluster0.hfwbdpi.mongodb.net/gridsync?retryWrites=true&w=majority`
 
 ## 🚀 Quick Start
 

@@ -57,9 +57,9 @@ Visit [Vercel Dashboard](https://vercel.com/dashboard)
 Add these in Vercel dashboard → Settings → Environment Variables:
 
 ```
-MONGODB_URI=mongodb+srv://SandheeshS:Vishnu%402006@cluster0.r78zvli.mongodb.net/solar_microgrid?retryWrites=true&w=majority&appName=Cluster0
+MONGODB_URI=mongodb+srv://prometheus140925_db_user:wkDGjpvOnQJ7gCW9@cluster0.hfwbdpi.mongodb.net/gridsync?retryWrites=true&w=majority
 
-JWT_SECRET=your_secure_random_string_here_change_this
+JWT_SECRET=GridSync2026SecureJWTKeyChangeThis
 
 NODE_ENV=production
 ```
