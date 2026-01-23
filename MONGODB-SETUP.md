@@ -17,7 +17,7 @@ Your MongoDB Atlas cluster is blocking connections because your IP address is no
 ### Step 2: Verify Connection String
 Your connection string:
 ```
-mongodb+srv://SandheeshS:Vishnu%402006@cluster0.r78zvli.mongodb.net/solar_microgrid?retryWrites=true&w=majority&appName=Cluster0
+mongodb+srv://prometheus140925_db_user:YOUR_PASSWORD@cluster0.hfwbdpi.mongodb.net/solar_microgrid?retryWrites=true&w=majority&appName=Cluster0
 ```
 
 ## 🚀 After Whitelisting IP
