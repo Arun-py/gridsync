@@ -11,14 +11,15 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: ["http://localhost:3000", "http://localhost:3001"],
-    methods: ["GET", "POST"]
+    origin: ["http://localhost:3000", "http://localhost:3001", "https://gridsync-qpsn.onrender.com", /\.vercel\.app$/],
+    methods: ["GET", "POST"],
+    credentials: true
   }
 });
 
 // Middleware
 app.use(cors({
-  origin: ["http://localhost:3000", "http://localhost:3001"]
+  origin: ["http://localhost:3000", "http://localhost:3001", "https://gridsync-qpsn.onrender.com", /\.vercel\.app$/]
 }));
 app.use(express.json());
 
