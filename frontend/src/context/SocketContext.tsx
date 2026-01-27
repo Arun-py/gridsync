@@ -19,6 +19,16 @@ interface SensorData {
     L2: string;
     L3: string;
   };
+  acLoad?: {
+    voltage: string;
+    current: string;
+    power: string;
+  };
+  dcLoad?: {
+    voltage: string;
+    current: string;
+    power: string;
+  };
 }
 
 interface SocketContextType {

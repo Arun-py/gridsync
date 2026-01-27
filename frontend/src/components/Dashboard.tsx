@@ -61,7 +61,7 @@ const Dashboard: React.FC = () => {
                 {sensorData?.battery.soc || '0'}%
               </p>
               <p className="text-xs text-gray-500">
-                {sensorData?.battery.voltage || '0'}V • {sensorData?.battery.temperature || '0'}°C
+                {sensorData?.battery.voltage || '0'}V • {sensorData?.battery.current || '0'}A
               </p>
             </div>
             <Battery className="h-8 w-8 text-green-500" />
@@ -71,12 +71,12 @@ const Dashboard: React.FC = () => {
         <div className="card">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Total Load</p>
+              <p className="text-sm font-medium text-gray-600">AC Load</p>
               <p className="text-2xl font-bold text-blue-600">
-                {totalPower.toFixed(0)} W
+                {sensorData?.acLoad?.power || '15'} W
               </p>
               <p className="text-xs text-gray-500">
-                L1: {sensorData?.loads.L1 || '0'}W
+                {sensorData?.acLoad?.voltage || '220'}V • {sensorData?.acLoad?.current || '0.06'}A
               </p>
             </div>
             <Zap className="h-8 w-8 text-blue-500" />
@@ -86,11 +86,15 @@ const Dashboard: React.FC = () => {
         <div className="card">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Efficiency</p>
-              <p className="text-2xl font-bold text-purple-600">92%</p>
-              <p className="text-xs text-green-500">+15% vs baseline</p>
+              <p className="text-sm font-medium text-gray-600">DC Load</p>
+              <p className="text-2xl font-bold text-purple-600">
+                {sensorData?.dcLoad?.power || '5'} W
+              </p>
+              <p className="text-xs text-gray-500">
+                {sensorData?.dcLoad?.voltage || '12'}V • {sensorData?.dcLoad?.current || '0.41'}A
+              </p>
             </div>
-            <TrendingUp className="h-8 w-8 text-purple-500" />
+            <Home className="h-8 w-8 text-purple-500" />
           </div>
         </div>
       </div>

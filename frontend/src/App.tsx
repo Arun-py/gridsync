@@ -13,6 +13,8 @@ import Battery from './components/Battery';
 import UserConsumption from './components/UserConsumption';
 import Faults from './components/Faults';
 import Messages from './components/Messages';
+import ACLoad from './components/ACLoad';
+import DCLoad from './components/DCLoad';
 import Login from './components/Login';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { SocketProvider } from './context/SocketContext';
@@ -42,6 +44,8 @@ function AppContent() {
             <Route path="/" element={<AdminDashboard />} />
             <Route path="/solar-panel" element={<SolarPanel />} />
             <Route path="/battery" element={<Battery />} />
+            <Route path="/ac-load" element={<ACLoad />} />
+            <Route path="/dc-load" element={<DCLoad />} />
             <Route path="/user-consumption" element={<UserConsumption />} />
             <Route path="/faults" element={<Faults />} />
             <Route path="/messages" element={<Messages />} />
@@ -64,6 +68,8 @@ function AppContent() {
       }`}>
         <Routes>
           <Route path="/" element={<UserDashboard />} />
+          <Route path="/ac-load" element={<ACLoad />} />
+          <Route path="/dc-load" element={<DCLoad />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useSocket } from '../context/SocketContext';
-import { Sun, MessageSquare, LogOut, Wifi, WifiOff, Moon, User } from 'lucide-react';
+import { Sun, MessageSquare, LogOut, Wifi, WifiOff, Moon, User, Zap, Battery, Power } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 const UserSidebar: React.FC = () => {
@@ -13,6 +13,8 @@ const UserSidebar: React.FC = () => {
 
   const navItems = [
     { path: '/', icon: Sun, label: 'Dashboard' },
+    { path: '/ac-load', icon: Power, label: 'AC Load' },
+    { path: '/dc-load', icon: Battery, label: 'DC Load' },
     { path: '/messages', icon: MessageSquare, label: 'Messages' },
   ];
 

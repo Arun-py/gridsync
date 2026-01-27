@@ -48,12 +48,13 @@ const Login: React.FC = () => {
         setEmail('');
         setPassword('');
       } else {
-        await axios.post('http://localhost:5003/api/auth/register', {
+        const response = await axios.post('http://localhost:5003/api/auth/register', {
           name,
           email,
           password,
           homeId
         });
+        console.log('Registration successful:', response.data);
         // Clear form after successful registration
         setName('');
         setEmail('');
@@ -61,6 +62,7 @@ const Login: React.FC = () => {
         setHomeId('');
         setHomeIdError('');
         setHomeIdSuggestion('');
+        // Login with the registered credentials
         await login(email, password);
       }
     } catch (err: any) {

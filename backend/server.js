@@ -366,25 +366,51 @@ io.on('connection', (socket) => {
   });
 });
 
+// Battery SOC tracking (starts at 95% and slowly decreases)
+let batterySOC = 95;
+let socDecreaseTimer = 0;
+
 // Generate and store sensor data
 const generateSensorData = async () => {
+  // Update battery SOC (decrease slightly every 10 minutes)
+  socDecreaseTimer++;
+  if (socDecreaseTimer >= 120) { // 120 * 5 seconds = 10 minutes
+    batterySOC = Math.max(93, batterySOC - 0.5); // Decrease by 0.5% every 10 min
+    socDecreaseTimer = 0;
+  }
+  
   const sensorData = {
     timestamp: new Date(),
+    // Solar Panel: 12.5-13W, 1-1.2A, 10.41-13V
     solarPanel: {
-      voltage: parseFloat((220 + Math.random() * 20).toFixed(2)),
-      current: parseFloat((15 + Math.random() * 5).toFixed(2)),
-      power: parseFloat((3300 + Math.random() * 500).toFixed(2))
+      voltage: parseFloat((10.41 + Math.random() * (13 - 10.41)).toFixed(2)),
+      current: parseFloat((1.0 + Math.random() * 0.2).toFixed(2)),
+      power: parseFloat((12.5 + Math.random() * 0.5).toFixed(2))
     },
+    // Battery: 10.95-11.0V, 0.41A, SOC: 95-93%
     battery: {
-      soc: parseFloat((70 + Math.random() * 30).toFixed(1)),
-      voltage: parseFloat((48 + Math.random() * 4).toFixed(2)),
-      current: parseFloat((10 + Math.random() * 5).toFixed(2)),
-      temperature: parseFloat((25 + Math.random() * 10).toFixed(1))
+      soc: parseFloat((batterySOC - Math.random() * 0.3).toFixed(1)),
+      voltage: parseFloat((10.95 + Math.random() * 0.05).toFixed(2)),
+      current: parseFloat((0.40 + Math.random() * 0.02).toFixed(2)),
+      temperature: parseFloat((25 + Math.random() * 5).toFixed(1))
     },
     loads: {
-      L1: parseFloat((500 + Math.random() * 200).toFixed(2)),
-      L2: parseFloat((300 + Math.random() * 150).toFixed(2)),
-      L3: parseFloat((400 + Math.random() * 100).toFixed(2))
+      // AC Load: 220V-219V-220.5V, 0.06A, 15W
+      L1: parseFloat((14.5 + Math.random() * 1.0).toFixed(2)),
+      // DC Load: 12V, 5W, 0.41A
+      L2: parseFloat((4.8 + Math.random() * 0.4).toFixed(2)),
+      L3: parseFloat((5.0 + Math.random() * 0.5).toFixed(2))
+    },
+    // Additional data for AC and DC loads
+    acLoad: {
+      voltage: parseFloat((219 + Math.random() * 1.5).toFixed(2)),
+      current: parseFloat((0.055 + Math.random() * 0.01).toFixed(3)),
+      power: parseFloat((14.5 + Math.random() * 1.0).toFixed(2))
+    },
+    dcLoad: {
+      voltage: parseFloat((11.95 + Math.random() * 0.1).toFixed(2)),
+      current: parseFloat((0.40 + Math.random() * 0.02).toFixed(2)),
+      power: parseFloat((4.8 + Math.random() * 0.4).toFixed(2))
     }
   };
   

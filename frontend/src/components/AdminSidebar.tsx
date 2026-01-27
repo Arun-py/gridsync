@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useSocket } from '../context/SocketContext';
-import { Sun, Battery, Zap, AlertTriangle, MessageSquare, LogOut, Wifi, WifiOff, Moon, User, Home } from 'lucide-react';
+import { Sun, Battery, Zap, AlertTriangle, MessageSquare, LogOut, Wifi, WifiOff, Moon, User, Home, Power } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useNotification } from '../context/NotificationContext';
 
@@ -17,6 +17,8 @@ const AdminSidebar: React.FC = () => {
     { path: '/', icon: Zap, label: 'Generation' },
     { path: '/solar-panel', icon: Sun, label: 'Solar Panel' },
     { path: '/battery', icon: Battery, label: 'Storage' },
+    { path: '/ac-load', icon: Power, label: 'AC Load' },
+    { path: '/dc-load', icon: Battery, label: 'DC Load' },
     { path: '/user-consumption', icon: Home, label: 'User Consumption' },
     { path: '/faults', icon: AlertTriangle, label: 'ReadMe' },
     { path: '/messages', icon: MessageSquare, label: 'Messages' },
