@@ -79,7 +79,7 @@ const Messages: React.FC = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:5003/api/users');
+      const response = await axios.get('https://gridsync-qpsn.onrender.com/api/users');
       setUsers(response.data);
     } catch (error) {
       console.error('Failed to fetch users:', error);
@@ -110,7 +110,7 @@ const Messages: React.FC = () => {
 
   const fetchUserMessages = async () => {
     try {
-      const response = await axios.get(`http://localhost:5003/api/messages/user/${user?.name}`);
+      const response = await axios.get(`https://gridsync-qpsn.onrender.com/api/messages/user/${user?.name}`);
       setMessages(response.data);
     } catch (error) {
       console.error('Failed to fetch user messages:', error);
@@ -120,7 +120,7 @@ const Messages: React.FC = () => {
 
   const fetchMessages = async () => {
     try {
-      const response = await axios.get('http://localhost:5003/api/messages');
+      const response = await axios.get('https://gridsync-qpsn.onrender.com/api/messages');
       setMessages(response.data);
     } catch (error) {
       console.error('Failed to fetch messages:', error);
@@ -134,7 +134,7 @@ const Messages: React.FC = () => {
     try {
       if (user?.role === 'user') {
         // Send message to backend
-        await axios.post('http://localhost:5003/api/messages', {
+        await axios.post('https://gridsync-qpsn.onrender.com/api/messages', {
           from: user?.name || 'User',
           to: 'admin',
           message: newMessage
@@ -160,7 +160,7 @@ const Messages: React.FC = () => {
         const selectedUserData = users.find(u => u._id === selectedUser);
         const recipientName = messageType === 'personal' ? selectedUserData?.name : 'all';
         
-        await axios.post('http://localhost:5003/api/messages', {
+        await axios.post('https://gridsync-qpsn.onrender.com/api/messages', {
           from: 'Admin',
           to: recipientName,
           message: newMessage
@@ -196,7 +196,7 @@ const Messages: React.FC = () => {
       setShowDeleteConfirm(messageId);
     } else {
       try {
-        await axios.put(`http://localhost:5003/api/messages/${messageId}/read`);
+        await axios.put(`https://gridsync-qpsn.onrender.com/api/messages/${messageId}/read`);
         setMessages(prev => prev.map(msg => 
           msg._id === messageId ? { ...msg, isRead: true } : msg
         ));
@@ -224,7 +224,7 @@ const Messages: React.FC = () => {
         setMessages(prev => prev.filter(msg => msg._id !== messageId));
       } else {
         // It's a real database message, delete from backend
-        await axios.delete(`http://localhost:5003/api/messages/${messageId}`);
+        await axios.delete(`https://gridsync-qpsn.onrender.com/api/messages/${messageId}`);
         setMessages(prev => prev.filter(msg => msg._id !== messageId));
       }
       setShowDeleteConfirm(null);
@@ -240,7 +240,7 @@ const Messages: React.FC = () => {
     if (!replyMessage.trim()) return;
     
     try {
-      await axios.post('http://localhost:5003/api/messages', {
+      await axios.post('https://gridsync-qpsn.onrender.com/api/messages', {
         from: 'Admin',
         to: userName,
         message: replyMessage
@@ -248,7 +248,7 @@ const Messages: React.FC = () => {
       
       // Delete the original user message after reply
       if (replyingTo) {
-        await axios.delete(`http://localhost:5003/api/messages/${replyingTo}`);
+        await axios.delete(`https://gridsync-qpsn.onrender.com/api/messages/${replyingTo}`);
         setMessages(prev => prev.filter(msg => msg._id !== replyingTo));
       }
       

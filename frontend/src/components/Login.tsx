@@ -23,7 +23,7 @@ const Login: React.FC = () => {
     }
     
     try {
-      const response = await axios.get(`http://localhost:5003/api/check-home-id/${inputHomeId}`);
+      const response = await axios.get(`https://gridsync-qpsn.onrender.com/api/check-home-id/${inputHomeId}`);
       if (response.data.exists) {
         setHomeIdError('Home ID already exists');
         setHomeIdSuggestion(`Suggestion: ${response.data.suggestion}`);
@@ -48,7 +48,7 @@ const Login: React.FC = () => {
         setEmail('');
         setPassword('');
       } else {
-        const response = await axios.post('http://localhost:5003/api/auth/register', {
+        const response = await axios.post('https://gridsync-qpsn.onrender.com/api/auth/register', {
           name,
           email,
           password,

@@ -18,7 +18,7 @@ const UserConsumption: React.FC = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:5003/api/users');
+      const response = await axios.get('https://gridsync-qpsn.onrender.com/api/users');
       setRegisteredUsers(response.data);
     } catch (error) {
       console.error('Failed to fetch users:', error);
