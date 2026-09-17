@@ -351,6 +351,15 @@ async function main(): Promise<void> {
 
   setInterval(() => void pollCommands(), 2000);
 
+  // Heartbeat the worker's state into the database.
+  //
+  // Without this, `lastFrameAt` is only written at startup and when a command
+  // is handled, so it ages continuously while the simulator is perfectly
+  // healthy — Demo Control showed "last frame 21s ago" and would have declared
+  // the worker unresponsive after 30 s. 5 s is frequent enough to stay well
+  // inside that window without writing on every tick.
+  setInterval(() => void publishState(), 5000);
+
   // Re-check the database periodically so recovery is detected and reported.
   setInterval(() => {
     void checkDbHealth().then((h) => pipeline.markDbHealth(h.connected, h.error ?? null));
