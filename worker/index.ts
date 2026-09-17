@@ -17,7 +17,7 @@
  *   - poll the database for control commands issued by the Demo Control page
  */
 
-import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
+import { createServer, type ServerResponse } from 'node:http';
 
 import { SCENARIOS, SIMULATION_DEFAULTS } from '../shared/constants';
 import { resolveNodes } from '../shared/nodes.config';
@@ -29,6 +29,7 @@ import { loadModel } from '../server/ml';
 import { Pipeline, type PipelinePersistence } from '../server/pipeline';
 import { alertRepo, eventRepo, predictionRepo, simulationRepo, telemetryRepo } from '../server/repositories';
 import { Broadcaster } from './broadcaster';
+import { handleApiRequest } from './devApi';
 import { MqttSource } from './sources/mqtt';
 import { SimulationSource } from './sources/simulation';
 import type { TelemetrySource } from './sources/types';
@@ -230,22 +231,8 @@ function json(res: ServerResponse, status: number, body: unknown): void {
   res.end(payload);
 }
 
-async function readBody(req: IncomingMessage): Promise<Record<string, unknown>> {
-  const chunks: Buffer[] = [];
-  let size = 0;
-  for await (const chunk of req) {
-    size += (chunk as Buffer).length;
-    // Reject oversized bodies rather than buffering them.
-    if (size > 64 * 1024) throw new Error('Request body too large');
-    chunks.push(chunk as Buffer);
-  }
-  if (chunks.length === 0) return {};
-  try {
-    return JSON.parse(Buffer.concat(chunks).toString('utf8')) as Record<string, unknown>;
-  } catch {
-    return {};
-  }
-}
+// Body parsing lives in worker/devApi.ts, which is the only place that needs
+// it now that the worker no longer defines its own POST routes.
 
 const server = createServer((req, res) => {
   const url = new URL(req.url ?? '/', `http://${req.headers.host ?? 'localhost'}`);
@@ -286,77 +273,29 @@ const server = createServer((req, res) => {
     });
   }
 
-  // --- simulation state ---
-  if (path === '/api/simulation/state') {
-    const s = source.getState?.();
-    return json(res, 200, {
-      running: source.isRunning(),
-      scenario: s?.scenario ?? 'NORMAL',
-      mode: useSimulation ? 'SIMULATION' : 'REALTIME',
-      intervalMs: s?.intervalMs ?? SIMULATION_DEFAULTS.intervalMs,
-      speed: s?.speed ?? SIMULATION_DEFAULTS.speed,
-      nodeCount: s?.nodeCount ?? source.getNodes().length,
-      startedAt: s?.startedAt ?? null,
-      framesGenerated: s?.framesGenerated ?? 0,
-      lastFrameAt: s?.lastFrameAt ?? null,
-      lastFrame: s?.lastFrame ?? null,
-      activeFaults: currentActiveFaults(s?.scenario ?? 'NORMAL'),
-      simulatedTime: s?.simulatedTime ?? new Date().toISOString(),
-    });
-  }
-
-  // --- live snapshot (polling fallback when SSE is unavailable) ---
-  if (path === '/api/telemetry/latest') {
-    if (!lastPayload) return json(res, 200, { snapshot: null, frames: [], health: null });
-    return json(res, 200, lastPayload);
-  }
-
-  if (path === '/api/nodes') {
-    return json(res, 200, { nodes: source.getNodes() });
-  }
-
-  // --- local control (development convenience; production goes via the API) ---
-  if (req.method === 'POST' && path.startsWith('/api/simulation/')) {
-    void (async () => {
-      const body: Record<string, unknown> = await readBody(req).catch(() => ({}));
-      const action = path.split('/').pop();
-
-      switch (action) {
-        case 'start':
-          await source.start();
-          break;
-        case 'stop':
-          await source.stop();
-          break;
-        case 'restart':
-          await source.stop();
-          await source.start();
-          break;
-        case 'scenario': {
-          const scenario = body.scenario as ScenarioId;
-          if (!scenario || !SCENARIOS[scenario]) {
-            return json(res, 400, { error: 'Unknown scenario', code: 'BAD_SCENARIO' });
-          }
-          source.setScenario?.(scenario);
-          pipeline.setScenario(scenario);
-          break;
+  // --- everything else under /api is served by the Vercel handlers -----
+  //
+  // The worker deliberately does NOT define its own /api/nodes,
+  // /api/telemetry/latest or /api/simulation/* routes. Earlier revisions did,
+  // and they drifted: the worker's simulation-state response was a flat object
+  // while the API's wraps it in `{ state, scenarios, limits }`, so the Demo
+  // Control page worked against one and broke against the other.
+  //
+  // One implementation per route, used by both environments, is the only way
+  // local and deployed behaviour cannot diverge.
+  if (path.startsWith('/api/')) {
+    void handleApiRequest(req, res, url)
+      .then((result) => {
+        if (!result.handled && !res.writableEnded) {
+          json(res, 404, { error: 'Not found', code: 'NOT_FOUND' });
         }
-        case 'config': {
-          if (typeof body.intervalMs === 'number') source.setIntervalMs?.(body.intervalMs);
-          if (typeof body.speed === 'number') source.setSpeed?.(body.speed);
-          if (typeof body.nodeCount === 'number') {
-            source.setNodeCount?.(body.nodeCount);
-            pipeline.resetNodes(source.getNodes());
-          }
-          break;
+      })
+      .catch((err) => {
+        log.error('Local API dispatch failed', errorFields(err));
+        if (!res.writableEnded) {
+          json(res, 500, { error: 'Internal error', code: 'INTERNAL_ERROR' });
         }
-        default:
-          return json(res, 404, { error: 'Unknown action', code: 'NOT_FOUND' });
-      }
-
-      await publishState();
-      return json(res, 200, { ok: true, state: source.getState?.() ?? null });
-    })();
+      });
     return;
   }
 

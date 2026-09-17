@@ -286,6 +286,21 @@ export interface FeatureVector {
   solarElevation: number;
   /** Measured power / irradiance-expected power. 0 for non-solar nodes. */
   efficiencyRatio: number;
+  /**
+   * Age of this reading in seconds at the moment of inference.
+   *
+   * Included because staleness is the *defining* signal of a communication
+   * fault, and it is genuinely available at inference time (the receiver always
+   * knows how old a frame is). Without it the classifier had to guess
+   * COMMUNICATION_FAULT from sensor values alone and confused a quiet night
+   * with a dead link.
+   *
+   * For this one class the model therefore partly re-learns the deterministic
+   * staleness threshold. That is acceptable: the rule engine remains the
+   * authority on communication faults, and the model's agreement is corroboration
+   * rather than the primary detection.
+   */
+  frameAgeSeconds: number;
 }
 
 export interface Prediction {

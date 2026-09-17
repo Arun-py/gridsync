@@ -1,18 +1,18 @@
 {
-  "version": "v7",
+  "version": "v8",
   "selection": {
-    "n_estimators": 80,
-    "max_depth": 10,
+    "n_estimators": 100,
+    "max_depth": 12,
     "min_samples_leaf": 8,
-    "validation_macro_f1": 0.815458,
-    "best_validation_macro_f1": 0.893506,
-    "total_tree_nodes": 33676,
+    "validation_macro_f1": 0.904771,
+    "best_validation_macro_f1": 0.929434,
+    "total_tree_nodes": 51346,
     "node_budget": 60000,
     "selection_rule": "highest validation macro-F1 among candidates within the 60,000-node portable-export budget"
   },
   "randomState": 42,
-  "datasetRows": 149468,
+  "datasetRows": 149464,
   "episodes": 132,
-  "trainedAt": "2026-09-17T19:25:43.646325+00:00",
+  "trainedAt": "2026-09-17T19:33:04.636983+00:00",
   "trainedOnSyntheticData": true
 }

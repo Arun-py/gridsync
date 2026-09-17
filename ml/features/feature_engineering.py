@@ -46,6 +46,11 @@ FEATURE_ORDER: list[str] = [
     "powerRateOfChange",
     "solarElevation",
     "efficiencyRatio",
+    # Age of the reading at inference time. Staleness is the defining signal of
+    # a communication fault and is genuinely available to the receiver, so
+    # withholding it forced the classifier to guess that class from sensor
+    # values alone.
+    "frameAgeSeconds",
 ]
 
 # Columns that describe the row but must never be fed to the model.

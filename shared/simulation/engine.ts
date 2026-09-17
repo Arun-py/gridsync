@@ -486,10 +486,15 @@ export class SimulationEngine {
     st.sequenceNumber += 1;
 
     let { voltage, current, temperature, lux } = reading;
-    let power = reading.power;
 
     // SENSOR_FAILURE injects physically impossible readings. The frame still
     // ARRIVES — that is what separates a sensor fault from a comms fault.
+    //
+    // Only the raw quantities are corrupted; power is derived from them below
+    // like any other frame. A device with a faulty voltage sensor still reports
+    // P = V x I from whatever it measured, so the frame stays internally
+    // consistent while being physically impossible — which is exactly what the
+    // validator needs to see to classify it as a SENSOR fault.
     if (mod.sensorFaultRate > 0 && this.rng() < mod.sensorFaultRate) {
       const pick = this.rng();
       if (pick < 0.4 && temperature !== undefined) {
@@ -501,7 +506,6 @@ export class SimulationEngine {
       } else {
         current = 9_999;
       }
-      power = voltage * current;
     }
 
     // Round FIRST, then derive power from the rounded values. A real device

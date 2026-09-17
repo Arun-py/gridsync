@@ -1,28 +1,28 @@
 {
-  "modelVersion": "v7",
-  "trainedAt": "2026-09-17T19:25:46.384815+00:00",
+  "modelVersion": "v8",
+  "trainedAt": "2026-09-17T19:33:07.321865+00:00",
   "algorithm": "RandomForestClassifier (scikit-learn)",
   "trainedOnSyntheticData": true,
-  "datasetSize": 149468,
-  "trainSize": 92228,
-  "validationSize": 27623,
-  "testSize": 29617,
+  "datasetSize": 149464,
+  "trainSize": 92226,
+  "validationSize": 27622,
+  "testSize": 29616,
   "splitStrategy": "Grouped by simulation episode and stratified by scenario: episodes are bucketed per scenario and divided 60/20/20, so no episode spans two splits (preventing leakage between autocorrelated neighbouring rows) while every scenario is represented in all three splits.",
-  "accuracy": 0.8707,
-  "macroPrecision": 0.8238,
-  "macroRecall": 0.8771,
-  "macroF1": 0.8255,
+  "accuracy": 0.9433,
+  "macroPrecision": 0.9217,
+  "macroRecall": 0.9382,
+  "macroF1": 0.9154,
   "perClass": {
     "ABNORMAL_CONSUMPTION": {
-      "precision": 0.4351,
-      "recall": 0.9821,
-      "f1": 0.603,
+      "precision": 0.5839,
+      "recall": 0.9846,
+      "f1": 0.7331,
       "support": 1170
     },
     "BATTERY_FAULT": {
-      "precision": 0.959,
-      "recall": 1.0,
-      "f1": 0.9791,
+      "precision": 1.0,
+      "recall": 0.9983,
+      "f1": 0.9991,
       "support": 585
     },
     "BATTERY_OVERHEAT": {
@@ -32,76 +32,76 @@
       "support": 780
     },
     "BROWNOUT": {
-      "precision": 0.9931,
-      "recall": 0.4628,
-      "f1": 0.6314,
+      "precision": 0.9975,
+      "recall": 0.5147,
+      "f1": 0.6791,
       "support": 1560
     },
     "COMMUNICATION_FAULT": {
-      "precision": 0.248,
-      "recall": 0.4587,
-      "f1": 0.322,
-      "support": 824
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 823
     },
     "LOW_SOC": {
-      "precision": 0.9737,
-      "recall": 0.9898,
-      "f1": 0.9817,
+      "precision": 1.0,
+      "recall": 0.9987,
+      "f1": 0.9994,
       "support": 1568
     },
     "NORMAL": {
-      "precision": 0.969,
-      "recall": 0.8789,
-      "f1": 0.9218,
+      "precision": 0.9786,
+      "recall": 0.9601,
+      "f1": 0.9693,
       "support": 19893
     },
     "OVERLOAD": {
-      "precision": 0.661,
-      "recall": 0.9885,
-      "f1": 0.7922,
+      "precision": 0.7023,
+      "recall": 0.9949,
+      "f1": 0.8234,
       "support": 785
     },
     "SENSOR_FAULT": {
-      "precision": 0.9139,
+      "precision": 0.9756,
       "recall": 0.9877,
-      "f1": 0.9494,
+      "f1": 0.9816,
       "support": 892
     },
     "SOLAR_SHADING": {
       "precision": 1.0,
-      "recall": 0.9,
-      "f1": 0.9474,
+      "recall": 0.8808,
+      "f1": 0.9366,
       "support": 780
     },
     "SOLAR_SOILING": {
-      "precision": 0.9091,
+      "precision": 0.9007,
       "recall": 1.0,
-      "f1": 0.9524,
+      "f1": 0.9478,
       "support": 780
     }
   },
   "confusionMatrix": [
     [
-      1149,
+      1152,
       0,
       0,
       0,
       0,
       0,
-      0,
-      21,
+      1,
+      17,
       0,
       0,
       0
     ],
     [
       0,
-      585,
+      584,
       0,
       0,
       0,
       0,
-      0,
+      1,
       0,
       0,
       0,
@@ -121,27 +121,14 @@
       0
     ],
     [
-      200,
+      93,
       0,
       0,
-      722,
+      803,
       0,
       0,
-      339,
-      299,
-      0,
-      0,
-      0
-    ],
-    [
-      189,
-      0,
-      0,
-      0,
-      378,
-      42,
-      215,
-      0,
+      409,
+      255,
       0,
       0,
       0
@@ -151,36 +138,49 @@
       0,
       0,
       0,
-      0,
-      1552,
-      0,
-      0,
-      16,
-      0,
-      0
-    ],
-    [
-      1100,
-      25,
+      823,
       0,
       0,
-      1146,
       0,
-      17484,
-      71,
-      67,
+      0,
       0,
       0
     ],
     [
-      3,
       0,
       0,
-      5,
+      0,
+      0,
+      0,
+      1566,
+      0,
+      0,
+      2,
+      0,
+      0
+    ],
+    [
+      727,
+      0,
+      0,
+      0,
+      0,
+      0,
+      19100,
+      52,
+      14,
+      0,
+      0
+    ],
+    [
+      1,
+      0,
+      0,
+      2,
       0,
       0,
       1,
-      776,
+      781,
       0,
       0,
       0
@@ -205,11 +205,11 @@
       0,
       0,
       0,
+      1,
       0,
-      0,
-      0,
-      702,
-      78
+      6,
+      687,
+      86
     ],
     [
       0,
@@ -241,71 +241,75 @@
   "featureImportances": [
     {
       "feature": "temperature",
-      "importance": 0.137742
-    },
-    {
-      "feature": "soc",
-      "importance": 0.121568
+      "importance": 0.133641
     },
     {
       "feature": "voltage",
-      "importance": 0.115977
+      "importance": 0.115583
     },
     {
-      "feature": "loadW",
-      "importance": 0.091037
+      "feature": "soc",
+      "importance": 0.115244
+    },
+    {
+      "feature": "frameAgeSeconds",
+      "importance": 0.092645
     },
     {
       "feature": "efficiencyRatio",
-      "importance": 0.087348
+      "importance": 0.073377
+    },
+    {
+      "feature": "loadW",
+      "importance": 0.070579
     },
     {
       "feature": "energyImbalanceW",
-      "importance": 0.083769
+      "importance": 0.069346
     },
     {
       "feature": "powerRollingMean",
-      "importance": 0.077894
+      "importance": 0.065994
     },
     {
       "feature": "power",
-      "importance": 0.061981
+      "importance": 0.060875
     },
     {
       "feature": "current",
-      "importance": 0.05527
+      "importance": 0.056011
     },
     {
       "feature": "lux",
-      "importance": 0.042736
-    },
-    {
-      "feature": "generationW",
-      "importance": 0.040048
+      "importance": 0.035491
     },
     {
       "feature": "solarElevation",
-      "importance": 0.028008
+      "importance": 0.029981
+    },
+    {
+      "feature": "generationW",
+      "importance": 0.02823
     },
     {
       "feature": "temperatureTrend",
-      "importance": 0.020575
-    },
-    {
-      "feature": "voltageTrend",
-      "importance": 0.013458
-    },
-    {
-      "feature": "currentTrend",
-      "importance": 0.011959
+      "importance": 0.018412
     },
     {
       "feature": "socTrend",
-      "importance": 0.010453
+      "importance": 0.01215
+    },
+    {
+      "feature": "currentTrend",
+      "importance": 0.011275
+    },
+    {
+      "feature": "voltageTrend",
+      "importance": 0.011029
     },
     {
       "feature": "powerRateOfChange",
-      "importance": 0.000178
+      "importance": 0.000135
     }
   ],
   "notes": [

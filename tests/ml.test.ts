@@ -103,7 +103,20 @@ describe('feature contract', () => {
       'powerRateOfChange',
       'solarElevation',
       'efficiencyRatio',
+      'frameAgeSeconds',
     ]);
+  });
+
+  it('exposes reading age, the defining signal of a communication fault', () => {
+    const fresh = extractFeatures(frame(SOLAR, { ageMs: 0 }), SOLAR, [], SNAPSHOT, 0.9);
+    const stale = extractFeatures(frame(SOLAR, { ageMs: 45_000 }), SOLAR, [], SNAPSHOT, 0.9);
+    expect(fresh.frameAgeSeconds).toBe(0);
+    expect(stale.frameAgeSeconds).toBe(45);
+  });
+
+  it('caps reading age so a long outage stays in the trained range', () => {
+    const ancient = extractFeatures(frame(SOLAR, { ageMs: 9_999_999 }), SOLAR, [], SNAPSHOT, 0.9);
+    expect(ancient.frameAgeSeconds).toBe(600);
   });
 
   it('has a human label for every feature', () => {
@@ -170,9 +183,14 @@ describe('feature contract', () => {
   it('serialises to an array in the declared order', () => {
     const features = extractFeatures(frame(SOLAR), SOLAR, [], SNAPSHOT, 0.9);
     const array = toFeatureArray(features);
+
     expect(array).toHaveLength(FEATURE_ORDER.length);
-    expect(array[0]).toBe(features.voltage);
-    expect(array[FEATURE_ORDER.length - 1]).toBe(features.efficiencyRatio);
+    // Assert position-by-position against FEATURE_ORDER rather than naming the
+    // first and last entries, so appending a feature cannot break this test
+    // while still catching any reordering.
+    FEATURE_ORDER.forEach((key, i) => {
+      expect(array[i]).toBe(features[key]);
+    });
   });
 });
 

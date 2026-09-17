@@ -311,18 +311,23 @@ These demand different responses from an operator, so they are never conflated.
 
 ### Current metrics
 
-Computed by `ml/evaluation/evaluate.py` on a held-out test split. Model **v6**:
+Computed by `ml/evaluation/evaluate.py` on a held-out test split. Model **v8**:
 
 | Metric | Value |
 |---|---|
-| Accuracy | 0.871 |
-| Macro precision | 0.824 |
-| Macro recall | 0.877 |
-| Macro F1 | 0.826 |
+| Accuracy | 0.943 |
+| Macro precision | 0.922 |
+| Macro recall | 0.938 |
+| Macro F1 | 0.915 |
 | Train / validation / test rows | 92,228 / 27,623 / 29,617 |
 
-Per-class F1 ranges from **1.00** (`BATTERY_OVERHEAT`) down to **0.32**
-(`COMMUNICATION_FAULT`) — the weak classes are shown in the UI rather than hidden.
+Per-class F1 ranges from **1.00** down to **0.68** (`BROWNOUT`, whose recall is 0.52).
+The weak classes are shown in the UI rather than hidden.
+
+`BROWNOUT` is under-detected because the scenario raises demand *and* sags voltage, so
+many of its rows are equally describable as `ABNORMAL_CONSUMPTION` — genuine label
+ambiguity in the synthetic set, not a silent failure. The deterministic `LOAD_BROWNOUT`
+rule catches the condition exactly and is unaffected.
 
 > **These numbers describe how separable the simulated scenario regimes are.** They are not
 > validated real-world fault-detection performance and must not be cited as such. Replace
@@ -477,23 +482,28 @@ broker can `POST /api/ingest` instead.
 1. **No hardware is connected.** All telemetry is simulated.
 2. **ML metrics reflect synthetic data.** They measure scenario separability, not
    real-world fault detection.
-3. **`COMMUNICATION_FAULT` and `ABNORMAL_CONSUMPTION` classify poorly** (F1 0.32 and 0.60).
-   A stale frame looks like a normal frame to a per-frame classifier; detecting it reliably
-   needs sequence-level features the current vector does not carry. The deterministic
-   communication rules handle this case correctly and are not affected.
-4. **No battery state-of-health figure is shown.** A credible SoH requires capacity testing
+3. **`BROWNOUT` recall is 0.52 and `ABNORMAL_CONSUMPTION` precision is 0.58.** The two
+   scenarios overlap by construction — a browning-out branch is also consuming abnormally —
+   so many rows are legitimately describable as either. This is label ambiguity in the
+   synthetic dataset. The deterministic `LOAD_BROWNOUT` rule detects the condition exactly
+   and is unaffected.
+4. **`COMMUNICATION_FAULT` scores 1.00 partly because it is easy.** Reading age is a
+   feature, and staleness is what defines the class, so the model largely re-learns the
+   deterministic threshold. Treat it as corroboration of the rule, not as independent
+   evidence that the model is skilled.
+5. **No battery state-of-health figure is shown.** A credible SoH requires capacity testing
    over many cycles against a known reference, which has not been performed. The measured
    quantities it would derive from are shown instead.
-5. **No physical control path.** Load-shedding suggestions are labelled
+6. **No physical control path.** Load-shedding suggestions are labelled
    "Recommended / Simulated Action". No relay exists and none is claimed to operate.
-6. **Rate limiting is per serverless instance**, not global — real protection against a
+7. **Rate limiting is per serverless instance**, not global — real protection against a
    single client, but not a substitute for a shared store.
-7. **Grid import is not metered.** The bill calculator estimates it as consumption minus
+8. **Grid import is not metered.** The bill calculator estimates it as consumption minus
    generation unless you enter a meter reading.
-8. **Tamil translation covers navigation and common labels only.** Detailed engineering text
+9. **Tamil translation covers navigation and common labels only.** Detailed engineering text
    falls back to English rather than shipping an unreviewed machine translation of
    safety-relevant content.
-9. **Simulation constants are engineering estimates**, not measurements from the prototype.
+10. **Simulation constants are engineering estimates**, not measurements from the prototype.
 
 ---
 

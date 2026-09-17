@@ -36,6 +36,7 @@ export const FEATURE_ORDER: Array<keyof FeatureVector> = [
   'powerRateOfChange',
   'solarElevation',
   'efficiencyRatio',
+  'frameAgeSeconds',
 ];
 
 /** Human labels for the explainability panel on the AI page. */
@@ -57,6 +58,7 @@ export const FEATURE_LABELS: Record<keyof FeatureVector, string> = {
   powerRateOfChange: 'Power rate of change',
   solarElevation: 'Solar elevation',
   efficiencyRatio: 'Efficiency ratio',
+  frameAgeSeconds: 'Reading age',
 };
 
 /**
@@ -148,6 +150,9 @@ export function extractFeatures(
     powerRateOfChange: safe(powerRateOfChange),
     solarElevation: safe(solarElevationValue),
     efficiencyRatio: safe(efficiencyRatio),
+    // Capped so a node that has been dark for hours does not produce an
+    // extreme value the trees never saw during training.
+    frameAgeSeconds: clampFinite(safe(frame.ageMs) / 1000, 0, 600),
   };
 }
 
