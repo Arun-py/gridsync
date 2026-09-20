@@ -25,7 +25,7 @@
  * SOC trends and deficit alerts all observable in a short demonstration.
  */
 
-import type { NodeConfig } from './types';
+import type { NodeConfig } from './types.js';
 
 export const NOMINAL_BUS_VOLTAGE = 12;
 

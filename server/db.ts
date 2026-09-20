@@ -14,9 +14,9 @@
 
 import { MongoClient, type Collection, type Db, type Document } from 'mongodb';
 
-import { COLLECTIONS } from '../shared/constants';
-import { env } from './env';
-import { errorFields, logger } from './logger';
+import { COLLECTIONS } from '../shared/constants.js';
+import { env } from './env.js';
+import { errorFields, logger } from './logger.js';
 
 const log = logger('db');
 

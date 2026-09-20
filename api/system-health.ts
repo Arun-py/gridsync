@@ -16,13 +16,13 @@
  * Nothing is reported as ONLINE on the basis of hope.
  */
 
-import { handler } from './_lib/handler';
-import { THRESHOLDS } from '../shared/constants';
-import { resolveNodes } from '../shared/nodes.config';
-import type { ComponentStatus, HealthComponent, SimulationState, SystemHealth } from '../shared/types';
-import { checkDbHealth } from '../server/db';
-import { loadModel } from '../server/ml';
-import { simulationRepo, telemetryRepo } from '../server/repositories';
+import { handler } from './_lib/handler.js';
+import { THRESHOLDS } from '../shared/constants.js';
+import { resolveNodes } from '../shared/nodes.config.js';
+import type { ComponentStatus, HealthComponent, SimulationState, SystemHealth } from '../shared/types.js';
+import { checkDbHealth } from '../server/db.js';
+import { loadModel } from '../server/ml.js';
+import { simulationRepo, telemetryRepo } from '../server/repositories.js';
 
 export default handler({ methods: ['GET'], auth: true }, async () => {
   const now = Date.now();

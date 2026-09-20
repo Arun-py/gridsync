@@ -23,8 +23,8 @@
  * pretending everything is fine.
  */
 
-import { SIMULATION_DEFAULTS, THRESHOLDS } from '../shared/constants';
-import { expectedSolarPower } from '../shared/physics';
+import { SIMULATION_DEFAULTS, THRESHOLDS } from '../shared/constants.js';
+import { expectedSolarPower } from '../shared/physics.js';
 import {
   createCommState,
   deriveNodeStatus,
@@ -32,9 +32,9 @@ import {
   RuleEngine,
   type NodeCommunicationState,
   type PendingAlert,
-} from '../shared/rules/engine';
-import { extractFeatures } from '../shared/ml/features';
-import { validateFrame } from '../shared/validation';
+} from '../shared/rules/engine.js';
+import { extractFeatures } from '../shared/ml/features.js';
+import { validateFrame } from '../shared/validation.js';
 import type {
   Alert,
   AppMode,
@@ -45,9 +45,9 @@ import type {
   SystemHealth,
   SystemSnapshot,
   TelemetryFrame,
-} from '../shared/types';
-import { predict } from './ml';
-import { errorFields, logger } from './logger';
+} from '../shared/types.js';
+import { predict } from './ml.js';
+import { errorFields, logger } from './logger.js';
 
 const log = logger('pipeline');
 

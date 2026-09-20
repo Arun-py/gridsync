@@ -9,11 +9,11 @@
  * reason. It does not invent a prediction to fill the space.
  */
 
-import { handler, intParam } from './_lib/handler';
-import { resolveNodes } from '../shared/nodes.config';
-import { loadModel } from '../server/ml';
-import { predictionRepo, simulationRepo } from '../server/repositories';
-import type { ModelMetrics, SimulationState } from '../shared/types';
+import { handler, intParam } from './_lib/handler.js';
+import { resolveNodes } from '../shared/nodes.config.js';
+import { loadModel } from '../server/ml.js';
+import { predictionRepo, simulationRepo } from '../server/repositories.js';
+import type { ModelMetrics, SimulationState } from '../shared/types.js';
 
 export default handler({ methods: ['GET'], auth: true }, async ({ query }) => {
   const limit = intParam(query.limit, 50, 1, 200);

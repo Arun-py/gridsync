@@ -6,9 +6,9 @@
  * versions, hostnames, connection strings or configuration.
  */
 
-import { handler } from './_lib/handler';
-import { checkDbHealth } from '../server/db';
-import { loadModel } from '../server/ml';
+import { handler } from './_lib/handler.js';
+import { checkDbHealth } from '../server/db.js';
+import { loadModel } from '../server/ml.js';
 
 export default handler({ methods: ['GET'], rateLimit: 60 }, async ({ res }) => {
   const db = await checkDbHealth();

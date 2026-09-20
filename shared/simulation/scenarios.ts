@@ -9,7 +9,7 @@
  * efficiency all fall out of the physics.
  */
 
-import type { ScenarioId } from '../types';
+import type { ScenarioId } from '../types.js';
 
 export interface ScenarioModifiers {
   /** Multiplies PV output after the irradiance/temperature model. 1 = healthy. */

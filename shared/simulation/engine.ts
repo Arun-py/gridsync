@@ -36,11 +36,11 @@ import {
   solarOperatingPoint,
   stepBatteryTemperature,
   stepSoc,
-} from '../physics';
-import { DS18B20_ERROR_VALUE, SIMULATION_DEFAULTS, THRESHOLDS } from '../constants';
-import { resolveNodes } from '../nodes.config';
-import type { NodeConfig, ScenarioId, TelemetryFrame } from '../types';
-import { getScenarioModifiers, type ScenarioModifiers } from './scenarios';
+} from '../physics.js';
+import { DS18B20_ERROR_VALUE, SIMULATION_DEFAULTS, THRESHOLDS } from '../constants.js';
+import { resolveNodes } from '../nodes.config.js';
+import type { NodeConfig, ScenarioId, TelemetryFrame } from '../types.js';
+import { getScenarioModifiers, type ScenarioModifiers } from './scenarios.js';
 
 export interface EngineOptions {
   nodeCount?: number;

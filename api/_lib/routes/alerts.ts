@@ -5,10 +5,10 @@
  * Vercel's per-deployment serverless function cap — see api/alerts/[...path].ts.
  */
 
-import { ApiError, handler, intParam } from '../handler';
-import type { AlertStatus, Severity } from '../../../shared/types';
-import { alertRepo, eventRepo } from '../../../server/repositories';
-import { logger } from '../../../server/logger';
+import { ApiError, handler, intParam } from '../handler.js';
+import type { AlertStatus, Severity } from '../../../shared/types.js';
+import { alertRepo, eventRepo } from '../../../server/repositories.js';
+import { logger } from '../../../server/logger.js';
 
 // ---------------------------------------------------------------------------
 // GET /api/alerts — the Alert Center feed.

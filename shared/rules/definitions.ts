@@ -13,9 +13,9 @@
  *   - recommends an action a human can actually take
  */
 
-import { THRESHOLDS } from '../constants';
-import { expectedSolarPower } from '../physics';
-import type { RuleContext, RuleDefinition, RuleHit } from '../types';
+import { THRESHOLDS } from '../constants.js';
+import { expectedSolarPower } from '../physics.js';
+import type { RuleContext, RuleDefinition, RuleHit } from '../types.js';
 
 /** Mean of the last `n` values of a numeric field, ignoring undefined. */
 function recentMean(ctx: RuleContext, pick: (f: RuleContext['history'][number]) => number | undefined, n: number): number | null {

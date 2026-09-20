@@ -16,10 +16,10 @@ import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { CLASS_GUIDANCE, loadForest, type RandomForestEvaluator } from '../shared/ml/forest';
-import { FEATURE_LABELS } from '../shared/ml/features';
-import type { FeatureVector, ModelMetrics, Prediction } from '../shared/types';
-import { errorFields, logger } from './logger';
+import { CLASS_GUIDANCE, loadForest, type RandomForestEvaluator } from '../shared/ml/forest.js';
+import { FEATURE_LABELS } from '../shared/ml/features.js';
+import type { FeatureVector, ModelMetrics, Prediction } from '../shared/types.js';
+import { errorFields, logger } from './logger.js';
 
 const log = logger('ml');
 

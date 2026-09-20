@@ -7,7 +7,7 @@
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-import { acknowledgeHandler, listHandler, resolveHandler } from '../_lib/routes/alerts';
+import { acknowledgeHandler, listHandler, resolveHandler } from '../_lib/routes/alerts.js';
 
 export default async function (req: VercelRequest, res: VercelResponse): Promise<void> {
   const segments = ([] as string[]).concat((req.query.path as string | string[]) ?? []);

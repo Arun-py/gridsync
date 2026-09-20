@@ -6,7 +6,7 @@
  * configuration (backend/config.py in v1) and describe the physical 12 V system.
  */
 
-import type { BillingAssumptions, ScenarioDefinition, ScenarioId } from './types';
+import type { BillingAssumptions, ScenarioDefinition, ScenarioId } from './types.js';
 
 // ---------------------------------------------------------------------------
 // Physical plausibility bounds — used by sensor validation.

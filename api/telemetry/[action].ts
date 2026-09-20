@@ -6,7 +6,7 @@
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-import { historyHandler, latestHandler } from '../_lib/routes/telemetry';
+import { historyHandler, latestHandler } from '../_lib/routes/telemetry.js';
 
 const ROUTES: Record<string, (req: VercelRequest, res: VercelResponse) => Promise<void>> = {
   latest: latestHandler,

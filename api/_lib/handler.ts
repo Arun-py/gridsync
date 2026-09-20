@@ -19,9 +19,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import type { ZodSchema } from 'zod';
 
-import type { Role } from '../../shared/types';
-import { can, verifyToken, type Permission, type TokenClaims } from '../../server/auth';
-import { errorFields, logger } from '../../server/logger';
+import type { Role } from '../../shared/types.js';
+import { can, verifyToken, type Permission, type TokenClaims } from '../../server/auth.js';
+import { errorFields, logger } from '../../server/logger.js';
 
 const log = logger('api');
 

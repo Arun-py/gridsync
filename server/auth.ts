@@ -14,9 +14,9 @@
 import bcrypt from 'bcryptjs';
 import { SignJWT, jwtVerify } from 'jose';
 
-import type { Role, User } from '../shared/types';
-import { env } from './env';
-import { errorFields, logger } from './logger';
+import type { Role, User } from '../shared/types.js';
+import { env } from './env.js';
+import { errorFields, logger } from './logger.js';
 
 const log = logger('auth');
 

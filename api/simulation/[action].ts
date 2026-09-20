@@ -6,7 +6,7 @@
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-import { controlHandler, stateHandler } from '../_lib/routes/simulation';
+import { controlHandler, stateHandler } from '../_lib/routes/simulation.js';
 
 const ROUTES: Record<string, (req: VercelRequest, res: VercelResponse) => Promise<void>> = {
   state: stateHandler,

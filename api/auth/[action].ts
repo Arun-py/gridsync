@@ -6,7 +6,7 @@
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-import { googleHandler, loginHandler, meHandler, signupHandler } from '../_lib/routes/auth';
+import { googleHandler, loginHandler, meHandler, signupHandler } from '../_lib/routes/auth.js';
 
 const ROUTES: Record<string, (req: VercelRequest, res: VercelResponse) => Promise<void>> = {
   login: loginHandler,

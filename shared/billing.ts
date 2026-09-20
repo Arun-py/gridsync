@@ -12,7 +12,7 @@
  * emission factor* — not a certified offset and not a project result.
  */
 
-import type { BillingAssumptions } from './types';
+import type { BillingAssumptions } from './types.js';
 
 export interface BillInput {
   /** Energy drawn from the grid over the period. */

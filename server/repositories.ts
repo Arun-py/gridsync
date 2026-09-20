@@ -11,7 +11,7 @@
 
 import type { Filter } from 'mongodb';
 
-import { COLLECTIONS } from '../shared/constants';
+import { COLLECTIONS } from '../shared/constants.js';
 import type {
   Alert,
   AlertStatus,
@@ -22,9 +22,9 @@ import type {
   TimeRange,
   UsageRecord,
   User,
-} from '../shared/types';
-import { collection } from './db';
-import { errorFields, logger } from './logger';
+} from '../shared/types.js';
+import { collection } from './db.js';
+import { errorFields, logger } from './logger.js';
 
 const log = logger('repo');
 

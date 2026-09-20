@@ -16,7 +16,7 @@
  * persistent condition produces one alert that stays ACTIVE, not a flood.
  */
 
-import { THRESHOLDS } from '../constants';
+import { THRESHOLDS } from '../constants.js';
 import type {
   Alert,
   AlertSource,
@@ -25,8 +25,8 @@ import type {
   RuleContext,
   Severity,
   SystemSnapshot,
-} from '../types';
-import { RULES } from './definitions';
+} from '../types.js';
+import { RULES } from './definitions.js';
 
 export interface NodeCommunicationState {
   nodeId: string;

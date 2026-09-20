@@ -16,13 +16,13 @@
 import { timingSafeEqual } from 'node:crypto';
 import { z } from 'zod';
 
-import { ApiError, handler } from './_lib/handler';
-import { getNodeConfig } from '../shared/nodes.config';
-import { normaliseFrame } from '../shared/validation';
-import type { TelemetryFrame, TelemetrySource } from '../shared/types';
-import { env } from '../server/env';
-import { telemetryRepo } from '../server/repositories';
-import { logger } from '../server/logger';
+import { ApiError, handler } from './_lib/handler.js';
+import { getNodeConfig } from '../shared/nodes.config.js';
+import { normaliseFrame } from '../shared/validation.js';
+import type { TelemetryFrame, TelemetrySource } from '../shared/types.js';
+import { env } from '../server/env.js';
+import { telemetryRepo } from '../server/repositories.js';
+import { logger } from '../server/logger.js';
 
 const log = logger('ingest');
 

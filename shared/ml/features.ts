@@ -13,9 +13,9 @@
  * that would be label leakage and the reported accuracy would be meaningless.
  */
 
-import { THRESHOLDS, TREND_WINDOW } from '../constants';
-import { expectedSolarPower } from '../physics';
-import type { EnrichedFrame, FeatureVector, NodeConfig, SystemSnapshot } from '../types';
+import { THRESHOLDS, TREND_WINDOW } from '../constants.js';
+import { expectedSolarPower } from '../physics.js';
+import type { EnrichedFrame, FeatureVector, NodeConfig, SystemSnapshot } from '../types.js';
 
 /** Canonical feature order. Mirrored exactly in feature_engineering.py. */
 export const FEATURE_ORDER: Array<keyof FeatureVector> = [

@@ -22,8 +22,8 @@
  * engineering estimates chosen to produce coherent, explainable behaviour.
  */
 
-import { THRESHOLDS } from './constants';
-import type { NodeConfig } from './types';
+import { THRESHOLDS } from './constants.js';
+import type { NodeConfig } from './types.js';
 
 // ---------------------------------------------------------------------------
 // Deterministic pseudo-randomness

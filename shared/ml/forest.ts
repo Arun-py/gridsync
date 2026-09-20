@@ -21,8 +21,8 @@
  * This is NOT a reimplementation of training. No learning happens here.
  */
 
-import type { FaultClass, FeatureVector } from '../types';
-import { FEATURE_ORDER, toFeatureArray } from './features';
+import type { FaultClass, FeatureVector } from '../types.js';
+import { FEATURE_ORDER, toFeatureArray } from './features.js';
 
 /**
  * One tree in sklearn's array representation.

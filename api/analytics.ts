@@ -9,16 +9,16 @@
  * resolution, and clearly an approximation rather than a metered reading.
  */
 
-import { handler } from './_lib/handler';
-import { resolveNodes } from '../shared/nodes.config';
-import type { AnalyticsResponse, SimulationState, TimeRange } from '../shared/types';
+import { handler } from './_lib/handler.js';
+import { resolveNodes } from '../shared/nodes.config.js';
+import type { AnalyticsResponse, SimulationState, TimeRange } from '../shared/types.js';
 import {
   alertRepo,
   predictionRepo,
   rangeToWindow,
   simulationRepo,
   telemetryRepo,
-} from '../server/repositories';
+} from '../server/repositories.js';
 
 const VALID: TimeRange[] = ['1H', '6H', '24H', '7D', '30D'];
 

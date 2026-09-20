@@ -9,12 +9,12 @@
 
 import { z } from 'zod';
 
-import { handler, intParam } from './_lib/handler';
-import { calculateBill } from '../shared/billing';
-import { DEFAULT_BILLING } from '../shared/constants';
-import type { BillingAssumptions, SimulationState, UsageRecord } from '../shared/types';
-import { simulationRepo, telemetryRepo, usageRepo } from '../server/repositories';
-import { logger } from '../server/logger';
+import { handler, intParam } from './_lib/handler.js';
+import { calculateBill } from '../shared/billing.js';
+import { DEFAULT_BILLING } from '../shared/constants.js';
+import type { BillingAssumptions, SimulationState, UsageRecord } from '../shared/types.js';
+import { simulationRepo, telemetryRepo, usageRepo } from '../server/repositories.js';
+import { logger } from '../server/logger.js';
 
 const log = logger('usage');
 

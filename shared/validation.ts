@@ -20,8 +20,8 @@
  * SENSOR_FAULT alert.
  */
 
-import { DS18B20_ERROR_VALUE, PLAUSIBLE } from './constants';
-import type { NodeConfig, TelemetryFrame } from './types';
+import { DS18B20_ERROR_VALUE, PLAUSIBLE } from './constants.js';
+import type { NodeConfig, TelemetryFrame } from './types.js';
 
 export interface ValidationResult {
   valid: boolean;

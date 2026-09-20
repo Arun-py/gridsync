@@ -6,10 +6,10 @@
  * the node count to change without touching the UI (spec §33).
  */
 
-import { handler, intParam } from './_lib/handler';
-import { resolveNodes } from '../shared/nodes.config';
-import { simulationRepo } from '../server/repositories';
-import type { SimulationState } from '../shared/types';
+import { handler, intParam } from './_lib/handler.js';
+import { resolveNodes } from '../shared/nodes.config.js';
+import { simulationRepo } from '../server/repositories.js';
+import type { SimulationState } from '../shared/types.js';
 
 export default handler({ methods: ['GET'], auth: true }, async ({ query }) => {
   // Prefer the count the worker is actually running; fall back to the query

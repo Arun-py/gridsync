@@ -5,10 +5,10 @@
  * Vercel's per-deployment serverless function cap — see api/telemetry/[action].ts.
  */
 
-import { ApiError, handler, intParam } from '../handler';
-import { expectedSolarPower } from '../../../shared/physics';
-import { getNodeConfig, resolveNodes } from '../../../shared/nodes.config';
-import { THRESHOLDS } from '../../../shared/constants';
+import { ApiError, handler, intParam } from '../handler.js';
+import { expectedSolarPower } from '../../../shared/physics.js';
+import { getNodeConfig, resolveNodes } from '../../../shared/nodes.config.js';
+import { THRESHOLDS } from '../../../shared/constants.js';
 import type {
   EnrichedFrame,
   NodeConfig,
@@ -16,8 +16,8 @@ import type {
   SystemSnapshot,
   TelemetryFrame,
   TimeRange,
-} from '../../../shared/types';
-import { alertRepo, rangeToWindow, simulationRepo, telemetryRepo } from '../../../server/repositories';
+} from '../../../shared/types.js';
+import { alertRepo, rangeToWindow, simulationRepo, telemetryRepo } from '../../../server/repositories.js';
 
 // ---------------------------------------------------------------------------
 // GET /api/telemetry/latest — current state of every node.

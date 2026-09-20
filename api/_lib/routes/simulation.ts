@@ -7,12 +7,12 @@
 
 import { z } from 'zod';
 
-import { ApiError, handler } from '../handler';
-import { SCENARIOS, SCENARIO_LIST, SIMULATION_DEFAULTS } from '../../../shared/constants';
-import { MAX_NODE_COUNT, MIN_NODE_COUNT } from '../../../shared/nodes.config';
-import type { ScenarioId, SimulationState } from '../../../shared/types';
-import { eventRepo, simulationRepo } from '../../../server/repositories';
-import { logger } from '../../../server/logger';
+import { ApiError, handler } from '../handler.js';
+import { SCENARIOS, SCENARIO_LIST, SIMULATION_DEFAULTS } from '../../../shared/constants.js';
+import { MAX_NODE_COUNT, MIN_NODE_COUNT } from '../../../shared/nodes.config.js';
+import type { ScenarioId, SimulationState } from '../../../shared/types.js';
+import { eventRepo, simulationRepo } from '../../../server/repositories.js';
+import { logger } from '../../../server/logger.js';
 
 // ---------------------------------------------------------------------------
 // GET /api/simulation/state — what the simulator is currently doing.

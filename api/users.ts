@@ -9,10 +9,10 @@
 
 import { z } from 'zod';
 
-import { ApiError, handler } from './_lib/handler';
-import type { Role } from '../shared/types';
-import { eventRepo, userRepo } from '../server/repositories';
-import { logger } from '../server/logger';
+import { ApiError, handler } from './_lib/handler.js';
+import type { Role } from '../shared/types.js';
+import { eventRepo, userRepo } from '../server/repositories.js';
+import { logger } from '../server/logger.js';
 
 const log = logger('users');
 

@@ -8,7 +8,7 @@
 import { OAuth2Client } from 'google-auth-library';
 import { z } from 'zod';
 
-import { ApiError, handler } from '../handler';
+import { ApiError, handler } from '../handler.js';
 import {
   checkPasswordPolicy,
   hashPassword,
@@ -18,10 +18,10 @@ import {
   signToken,
   toPublicUser,
   verifyPassword,
-} from '../../../server/auth';
-import { env } from '../../../server/env';
-import { eventRepo, stripSecrets, userRepo, type UserDocument } from '../../../server/repositories';
-import { errorFields, logger } from '../../../server/logger';
+} from '../../../server/auth.js';
+import { env } from '../../../server/env.js';
+import { eventRepo, stripSecrets, userRepo, type UserDocument } from '../../../server/repositories.js';
+import { errorFields, logger } from '../../../server/logger.js';
 
 // ---------------------------------------------------------------------------
 // POST /api/auth/login — email + password.
