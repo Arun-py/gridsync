@@ -71,3 +71,5 @@ Prompt.txt
 backend/
 frontend/
 legacy/
+.vercel
+.env*
