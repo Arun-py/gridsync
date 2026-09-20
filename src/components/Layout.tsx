@@ -31,6 +31,7 @@ import { useAppDispatch, useAppSelector } from '../store';
 import { logout } from '../store/authSlice';
 import Sidebar from './Sidebar';
 import ToastHost from './ToastHost';
+import { ThemeToggle } from './ui';
 
 export default function Layout() {
   const { t } = useTranslation();
@@ -135,6 +136,8 @@ export default function Layout() {
         >
           <RefreshCw className="h-4 w-4" />
         </button>
+
+        <ThemeToggle />
 
         {/* ---- user ---- */}
         <div className="flex items-center gap-2 border-l border-panel-700 pl-2 sm:pl-3">

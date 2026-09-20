@@ -47,6 +47,7 @@ export default function App() {
   const navigate = useNavigate();
   const status = useAppSelector((s) => s.auth.status);
   const language = useAppSelector((s) => s.ui.language);
+  const theme = useAppSelector((s) => s.ui.theme);
   const { i18n } = useTranslation();
 
   // Restore the session once on boot.
@@ -63,6 +64,15 @@ export default function App() {
   useEffect(() => {
     if (i18n.language !== language) void i18n.changeLanguage(language);
   }, [language, i18n]);
+
+  // Keep <html class="light"> and the theme-color meta in sync with preference.
+  useEffect(() => {
+    document.documentElement.classList.toggle('light', theme === 'light');
+    document.querySelector('meta[name="theme-color"]')?.setAttribute(
+      'content',
+      theme === 'light' ? '#f1f5f9' : '#080b11',
+    );
+  }, [theme]);
 
   return (
     <Routes>

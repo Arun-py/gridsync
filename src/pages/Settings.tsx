@@ -11,19 +11,20 @@
  */
 
 import { useEffect, useState } from 'react';
-import { Check, Globe, Languages, Radio, Settings as SettingsIcon, Sliders } from 'lucide-react';
+import { Check, Globe, Languages, Moon, Radio, Settings as SettingsIcon, Sliders, Sun } from 'lucide-react';
 
 import type { BillingAssumptions } from '@shared/types';
 import { DEFAULT_BILLING, THRESHOLDS } from '@shared/constants';
 import { Metric, Panel } from '../components/ui';
 import { SUPPORTED_LANGUAGES } from '../i18n';
 import { useAppDispatch, useAppSelector, usePermission } from '../store';
-import { setLanguage, type Language } from '../store/uiSlice';
+import { setLanguage, setTheme, type Language } from '../store/uiSlice';
 import { useTelemetry } from '../lib/telemetry/TelemetryContext';
 
 export default function Settings() {
   const dispatch = useAppDispatch();
   const language = useAppSelector((s) => s.ui.language);
+  const theme = useAppSelector((s) => s.ui.theme);
   const user = useAppSelector((s) => s.auth.user);
   const permissions = useAppSelector((s) => s.auth.permissions);
   const canSwitchMode = usePermission('mode:switch');
@@ -98,6 +99,37 @@ export default function Settings() {
             back to English rather than shipping an unreviewed machine translation of
             safety-relevant content.
           </p>
+        </Panel>
+
+        {/* ---- appearance ---- */}
+        <Panel title="Appearance" subtitle="Light or dark interface">
+          <div className="space-y-2">
+            {(
+              [
+                { value: 'dark', label: 'Dark', icon: Moon, note: 'Control-room default' },
+                { value: 'light', label: 'Light', icon: Sun, note: 'High-contrast, well-lit rooms' },
+              ] as const
+            ).map((opt) => (
+              <button
+                key={opt.value}
+                onClick={() => dispatch(setTheme(opt.value))}
+                className={`flex w-full items-center justify-between rounded border px-3 py-2.5 text-left transition-colors ${
+                  theme === opt.value
+                    ? 'border-primary-500 bg-primary-600/10'
+                    : 'border-panel-700 bg-panel-850 hover:border-panel-600'
+                }`}
+              >
+                <span className="flex items-center gap-2.5">
+                  <opt.icon className="h-4 w-4 text-slate-500" />
+                  <span>
+                    <span className="block text-xs font-medium text-slate-200">{opt.label}</span>
+                    <span className="block text-2xs text-slate-500">{opt.note}</span>
+                  </span>
+                </span>
+                {theme === opt.value && <Check className="h-4 w-4 text-primary-400" />}
+              </button>
+            ))}
+          </div>
         </Panel>
 
         {/* ---- operating mode ---- */}

@@ -6,9 +6,33 @@
  */
 
 import type { ReactNode } from 'react';
-import { AlertTriangle, Database, Loader2, WifiOff } from 'lucide-react';
+import { AlertTriangle, Database, Loader2, Moon, Sun, WifiOff } from 'lucide-react';
 
 import type { ComponentStatus, NodeStatus, Severity } from '@shared/types';
+import { useAppDispatch, useTheme } from '../store';
+import { toggleTheme } from '../store/uiSlice';
+
+// ---------------------------------------------------------------------------
+// ThemeToggle
+// ---------------------------------------------------------------------------
+
+/** Switches the whole app between the dark control-room theme and light mode. */
+export function ThemeToggle({ className = '' }: { className?: string }) {
+  const theme = useTheme();
+  const dispatch = useAppDispatch();
+  const isLight = theme === 'light';
+
+  return (
+    <button
+      onClick={() => dispatch(toggleTheme())}
+      className={`btn btn-ghost p-2 ${className}`}
+      aria-label={isLight ? 'Switch to dark mode' : 'Switch to light mode'}
+      title={isLight ? 'Switch to dark mode' : 'Switch to light mode'}
+    >
+      {isLight ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+    </button>
+  );
+}
 
 // ---------------------------------------------------------------------------
 // Panel

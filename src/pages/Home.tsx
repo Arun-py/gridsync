@@ -28,6 +28,8 @@ import {
   Zap,
 } from 'lucide-react';
 
+import { ThemeToggle } from '../components/ui';
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-panel-950">
@@ -64,6 +66,7 @@ function SiteHeader() {
         </nav>
 
         <div className="ml-auto flex items-center gap-2">
+          <ThemeToggle />
           <Link to="/login" className="btn btn-ghost btn-sm">Sign in</Link>
           <Link to="/signup" className="btn btn-primary btn-sm">Get started</Link>
         </div>

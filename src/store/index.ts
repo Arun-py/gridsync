@@ -33,3 +33,7 @@ export function usePermission(permission: string): boolean {
 export function useCurrentUser() {
   return useAppSelector((s) => s.auth.user);
 }
+
+export function useTheme() {
+  return useAppSelector((s) => s.ui.theme);
+}

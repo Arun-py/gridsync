@@ -1,10 +1,26 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#080b11" />
     <title>GridSync — Intelligent Microgrid Monitoring</title>
+    <script>
+      // Applied synchronously, before first paint, so a light-mode user never
+      // sees a flash of the dark theme while React boots.
+      (function () {
+        try {
+          var raw = localStorage.getItem('gridsync.prefs');
+          var theme = raw ? JSON.parse(raw).theme : null;
+          if (!theme) {
+            theme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+          }
+          if (theme === 'light') document.documentElement.classList.add('light');
+        } catch (e) {
+          /* default dark theme applies */
+        }
+      })();
+    </script>
     <meta
       name="description"
       content="GridSync: intelligent monitoring, predictive maintenance and optimization for renewable microgrids."

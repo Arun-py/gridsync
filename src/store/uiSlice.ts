@@ -11,6 +11,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { Severity } from '@shared/types';
 
 export type Language = 'en' | 'ta';
+export type Theme = 'dark' | 'light';
 
 export interface Toast {
   id: string;
@@ -25,6 +26,7 @@ export interface Toast {
 export interface UiState {
   sidebarCollapsed: boolean;
   language: Language;
+  theme: Theme;
   toasts: Toast[];
   /** Alert ids already surfaced, so one alert cannot pop repeatedly. */
   notifiedAlertIds: string[];
@@ -45,10 +47,23 @@ function savePrefs(state: UiState): void {
   try {
     localStorage.setItem(
       PREFS_KEY,
-      JSON.stringify({ sidebarCollapsed: state.sidebarCollapsed, language: state.language }),
+      JSON.stringify({
+        sidebarCollapsed: state.sidebarCollapsed,
+        language: state.language,
+        theme: state.theme,
+      }),
     );
   } catch {
     /* preferences simply will not persist */
+  }
+}
+
+/** No saved preference yet: honour the OS/browser setting rather than forcing dark. */
+function preferredTheme(): Theme {
+  try {
+    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  } catch {
+    return 'dark';
   }
 }
 
@@ -57,6 +72,7 @@ const prefs = loadPrefs();
 const initialState: UiState = {
   sidebarCollapsed: prefs.sidebarCollapsed ?? false,
   language: prefs.language ?? 'en',
+  theme: prefs.theme ?? preferredTheme(),
   toasts: [],
   notifiedAlertIds: [],
 };
@@ -71,6 +87,14 @@ const uiSlice = createSlice({
     },
     setLanguage(state, action: PayloadAction<Language>) {
       state.language = action.payload;
+      savePrefs(state);
+    },
+    setTheme(state, action: PayloadAction<Theme>) {
+      state.theme = action.payload;
+      savePrefs(state);
+    },
+    toggleTheme(state) {
+      state.theme = state.theme === 'dark' ? 'light' : 'dark';
       savePrefs(state);
     },
     pushToast: {
@@ -101,5 +125,6 @@ const uiSlice = createSlice({
   },
 });
 
-export const { toggleSidebar, setLanguage, pushToast, dismissToast, clearToasts } = uiSlice.actions;
+export const { toggleSidebar, setLanguage, setTheme, toggleTheme, pushToast, dismissToast, clearToasts } =
+  uiSlice.actions;
 export default uiSlice.reducer;

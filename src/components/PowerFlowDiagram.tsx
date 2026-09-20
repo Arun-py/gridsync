@@ -11,8 +11,27 @@
  */
 
 import type { EnrichedFrame, NodeConfig, SystemSnapshot } from '@shared/types';
+import { useTheme } from '../store';
 import { CHART_COLORS } from './charts';
 import { fmt } from './ui';
+
+/** Neutral SVG colours, kept in step with the panel/slate CSS variable tokens. */
+interface Neutrals {
+  rail: string;
+  idle: string;
+  dimText: string;
+  mutedText: string;
+  boxFill: string;
+  junctionRing: string;
+  junctionDot: string;
+  labelText: string;
+  arrow: string;
+}
+
+const NEUTRALS: Record<'dark' | 'light', Neutrals> = {
+  dark: { rail: '#1e2531', idle: '#334155', dimText: '#475569', mutedText: '#64748b', boxFill: '#11161f', junctionRing: '#475569', junctionDot: '#94a3b8', labelText: '#e2e8f0', arrow: '#64748b' },
+  light: { rail: '#e2e8f0', idle: '#94a3b8', dimText: '#94a3b8', mutedText: '#64748b', boxFill: '#ffffff', junctionRing: '#94a3b8', junctionDot: '#475569', labelText: '#1e293b', arrow: '#64748b' },
+};
 
 interface Props {
   snapshot: SystemSnapshot;
@@ -64,6 +83,9 @@ export default function PowerFlowDiagram({
     return 'ONLINE';
   };
 
+  const theme = useTheme();
+  const n = NEUTRALS[theme];
+
   return (
     <div className="w-full overflow-x-auto">
       <svg
@@ -74,7 +96,7 @@ export default function PowerFlowDiagram({
       >
         <defs>
           <marker id="pf-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b" />
+            <path d="M 0 0 L 10 5 L 0 10 z" fill={n.arrow} />
           </marker>
           <filter id="pf-glow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="3" result="b" />
@@ -95,6 +117,7 @@ export default function PowerFlowDiagram({
           label={`${fmt(snapshot.generationW, 0)} W`}
           labelX={340}
           labelY={130}
+          n={n}
         />
 
         {/* Junction -> battery (charging) OR battery -> junction (discharging) */}
@@ -110,6 +133,7 @@ export default function PowerFlowDiagram({
           labelX={252}
           labelY={202}
           inactive={!charging && !discharging}
+          n={n}
         />
 
         {/* Junction -> AC load */}
@@ -120,6 +144,7 @@ export default function PowerFlowDiagram({
           label={`${fmt(snapshot.acLoadW, 0)} W`}
           labelX={224}
           labelY={292}
+          n={n}
         />
 
         {/* Junction -> DC load */}
@@ -130,13 +155,14 @@ export default function PowerFlowDiagram({
           label={`${fmt(snapshot.dcLoadW, 0)} W`}
           labelX={430}
           labelY={292}
+          n={n}
         />
 
         {/* ================= junction ================= */}
         <g>
-          <circle cx="330" cy="176" r="7" fill="#11161f" stroke="#475569" strokeWidth="1.5" />
-          <circle cx="330" cy="176" r="2.5" fill="#94a3b8" />
-          <text x="346" y="172" fill="#64748b" fontSize="10" fontWeight="500">
+          <circle cx="330" cy="176" r="7" fill={n.boxFill} stroke={n.junctionRing} strokeWidth="1.5" />
+          <circle cx="330" cy="176" r="2.5" fill={n.junctionDot} />
+          <text x="346" y="172" fill={n.mutedText} fontSize="10" fontWeight="500">
             DC bus
           </text>
           <text x="346" y="185" fill={snapshot.netPowerW >= 0 ? '#22c55e' : '#f59e0b'} fontSize="10">
@@ -158,6 +184,7 @@ export default function PowerFlowDiagram({
           onClick={solar[0] ? () => onSelectNode?.(solar[0].nodeId) : undefined}
           selected={selectedNodeId === solar[0]?.nodeId}
           count={solar.length}
+          n={n}
         />
 
         <NodeBox
@@ -172,6 +199,7 @@ export default function PowerFlowDiagram({
           onClick={battery[0] ? () => onSelectNode?.(battery[0].nodeId) : undefined}
           selected={selectedNodeId === battery[0]?.nodeId}
           count={battery.length}
+          n={n}
         />
 
         <NodeBox
@@ -185,6 +213,7 @@ export default function PowerFlowDiagram({
           onClick={acLoad[0] ? () => onSelectNode?.(acLoad[0].nodeId) : undefined}
           selected={selectedNodeId === acLoad[0]?.nodeId}
           count={acLoad.length}
+          n={n}
         />
 
         <NodeBox
@@ -198,6 +227,7 @@ export default function PowerFlowDiagram({
           onClick={dcLoad[0] ? () => onSelectNode?.(dcLoad[0].nodeId) : undefined}
           selected={selectedNodeId === dcLoad[0]?.nodeId}
           count={dcLoad.length}
+          n={n}
         />
       </svg>
     </div>
@@ -212,6 +242,7 @@ function FlowPath({
   labelX,
   labelY,
   inactive = false,
+  n,
 }: {
   d: string;
   watts: number;
@@ -220,13 +251,14 @@ function FlowPath({
   labelX: number;
   labelY: number;
   inactive?: boolean;
+  n: Neutrals;
 }) {
   const active = !inactive && Math.abs(watts) > 0.5;
 
   return (
     <g>
       {/* static rail, always visible so topology reads even at zero flow */}
-      <path d={d} stroke="#1e2531" strokeWidth={flowWidth(watts) + 2} fill="none" strokeLinecap="round" />
+      <path d={d} stroke={n.rail} strokeWidth={flowWidth(watts) + 2} fill="none" strokeLinecap="round" />
       {/* animated flow, only when power is actually moving */}
       {active && (
         <path
@@ -242,22 +274,24 @@ function FlowPath({
         />
       )}
       {!active && (
-        <path d={d} stroke="#334155" strokeWidth={1.25} fill="none" strokeDasharray="3 5" />
+        <path d={d} stroke={n.idle} strokeWidth={1.25} fill="none" strokeDasharray="3 5" />
       )}
-      <text x={labelX} y={labelY} fill={active ? color : '#475569'} fontSize="10" fontWeight="500">
+      <text x={labelX} y={labelY} fill={active ? color : n.dimText} fontSize="10" fontWeight="500">
         {label}
       </text>
     </g>
   );
 }
 
-const STATUS_STROKE: Record<EnrichedFrame['status'], string> = {
-  ONLINE: '#334155',
-  DEGRADED: '#f59e0b',
-  STALE: '#f59e0b',
-  OFFLINE: '#ef4444',
-  FAULT: '#ef4444',
-};
+function statusStroke(n: Neutrals): Record<EnrichedFrame['status'], string> {
+  return {
+    ONLINE: n.idle,
+    DEGRADED: '#f59e0b',
+    STALE: '#f59e0b',
+    OFFLINE: '#ef4444',
+    FAULT: '#ef4444',
+  };
+}
 
 function NodeBox({
   x,
@@ -271,6 +305,7 @@ function NodeBox({
   onClick,
   selected,
   count,
+  n,
 }: {
   x: number;
   y: number;
@@ -283,6 +318,7 @@ function NodeBox({
   onClick?: () => void;
   selected?: boolean;
   count: number;
+  n: Neutrals;
 }) {
   const w = 156;
   const h = 76;
@@ -308,8 +344,8 @@ function NodeBox({
         width={w}
         height={h}
         rx="5"
-        fill="#11161f"
-        stroke={selected ? color : STATUS_STROKE[status]}
+        fill={n.boxFill}
+        stroke={selected ? color : statusStroke(n)[status]}
         strokeWidth={selected ? 2 : 1.25}
         filter={faulted ? 'url(#pf-glow)' : undefined}
         opacity={faulted ? 0.95 : 1}
@@ -317,10 +353,10 @@ function NodeBox({
       {/* accent rail identifies the subsystem at a glance */}
       <rect x={x} y={y} width="3" height={h} rx="1.5" fill={color} opacity={faulted ? 0.5 : 1} />
 
-      <text x={x + 14} y={y + 21} fill="#e2e8f0" fontSize="12" fontWeight="600" letterSpacing="0.03em">
+      <text x={x + 14} y={y + 21} fill={n.labelText} fontSize="12" fontWeight="600" letterSpacing="0.03em">
         {label}
       </text>
-      <text x={x + 14} y={y + 35} fill="#64748b" fontSize="9">
+      <text x={x + 14} y={y + 35} fill={n.mutedText} fontSize="9">
         {sublabel}
         {count > 1 ? ` · ${count} nodes` : ''}
       </text>
@@ -328,7 +364,7 @@ function NodeBox({
         {value}
       </text>
       {detail && (
-        <text x={x + 14} y={y + 70} fill="#475569" fontSize="9">
+        <text x={x + 14} y={y + 70} fill={n.dimText} fontSize="9">
           {detail}
         </text>
       )}

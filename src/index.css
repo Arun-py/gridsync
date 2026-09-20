@@ -13,6 +13,10 @@
  *   - tabular-figure numerics so readings do not jitter as digits change
  *   - restrained radii (4-6px) and hairline borders; no glassmorphism, no
  *     gradient washes, no oversized rounded cards
+ *
+ * Theming: every neutral (panel-* and slate-*) is a CSS variable, dark by
+ * default. Adding `.light` to <html> (see src/App.tsx) swaps the whole set —
+ * component markup never needs a dark:/light: variant.
  */
 
 @layer base {
@@ -24,6 +28,52 @@
     --grid-raised: 17 22 31;
     --grid-border: 30 37 49;
     --grid-border-strong: 42 51 66;
+
+    /* Control-room neutrals (backgrounds/borders), darkest to lightest. */
+    --c-panel-950: 8 11 17;
+    --c-panel-900: 12 16 23;
+    --c-panel-850: 17 22 31;
+    --c-panel-800: 22 28 39;
+    --c-panel-700: 30 37 49;
+    --c-panel-600: 42 51 66;
+    --c-panel-500: 59 70 87;
+
+    /* Text neutrals, highest emphasis (50) to most subtle (700). */
+    --c-slate-50: 248 250 252;
+    --c-slate-100: 241 245 249;
+    --c-slate-200: 226 232 240;
+    --c-slate-300: 203 213 225;
+    --c-slate-400: 148 163 184;
+    --c-slate-500: 100 116 139;
+    --c-slate-600: 71 85 105;
+    --c-slate-700: 51 65 85;
+  }
+
+  :root.light {
+    color-scheme: light;
+
+    --grid-bg: 241 245 249;
+    --grid-surface: 248 250 252;
+    --grid-raised: 255 255 255;
+    --grid-border: 203 213 225;
+    --grid-border-strong: 148 163 184;
+
+    --c-panel-950: 241 245 249;
+    --c-panel-900: 248 250 252;
+    --c-panel-850: 255 255 255;
+    --c-panel-800: 226 232 240;
+    --c-panel-700: 203 213 225;
+    --c-panel-600: 148 163 184;
+    --c-panel-500: 100 116 139;
+
+    --c-slate-50: 15 23 42;
+    --c-slate-100: 30 41 59;
+    --c-slate-200: 51 65 85;
+    --c-slate-300: 71 85 105;
+    --c-slate-400: 100 116 139;
+    --c-slate-500: 148 163 184;
+    --c-slate-600: 203 213 225;
+    --c-slate-700: 226 232 240;
   }
 
   * {

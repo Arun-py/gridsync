@@ -24,6 +24,7 @@ import {
   YAxis,
 } from 'recharts';
 
+import { useTheme } from '../store';
 import { EmptyState } from './ui';
 
 export const CHART_COLORS = {
@@ -38,7 +39,20 @@ export const CHART_COLORS = {
   info: '#38bdf8',
 } as const;
 
-const AXIS = { stroke: '#334155', fontSize: 11, tickLine: false, axisLine: false } as const;
+/**
+ * Neutral chart chrome (axes, gridlines, cursor) isn't Tailwind-class-driven —
+ * Recharts takes raw colour strings as props — so it needs its own light/dark
+ * pair, kept in step with the panel/slate CSS variable tokens in index.css.
+ */
+const CHART_NEUTRALS = {
+  dark: { axis: '#334155', grid: '#1e2531', legend: '#94a3b8', cursor: '#334155', tooltipCursorFill: 'rgba(148,163,184,0.06)', refLabel: '#64748b' },
+  light: { axis: '#64748b', grid: '#e2e8f0', legend: '#475569', cursor: '#94a3b8', tooltipCursorFill: 'rgba(100,116,139,0.08)', refLabel: '#64748b' },
+} as const;
+
+function useChartNeutrals() {
+  const theme = useTheme();
+  return CHART_NEUTRALS[theme];
+}
 
 /** Time formatter that adapts to the span being displayed. */
 function timeTick(value: string, spanMs: number): string {
@@ -140,6 +154,9 @@ export function TimeSeriesChart({
   showLegend?: boolean;
   emptyMessage?: string;
 }) {
+  const neutrals = useChartNeutrals();
+  const AXIS = { stroke: neutrals.axis, fontSize: 11, tickLine: false, axisLine: false } as const;
+
   if (!data || data.length === 0) {
     return <EmptyState title="No data" description={emptyMessage} />;
   }
@@ -167,7 +184,7 @@ export function TimeSeriesChart({
             ))}
         </defs>
 
-        <CartesianGrid strokeDasharray="2 4" stroke="#1e2531" vertical={false} />
+        <CartesianGrid strokeDasharray="2 4" stroke={neutrals.grid} vertical={false} />
         <XAxis
           dataKey="timestamp"
           {...AXIS}
@@ -175,12 +192,12 @@ export function TimeSeriesChart({
           minTickGap={44}
         />
         <YAxis {...AXIS} domain={yDomain ?? ['auto', 'auto']} width={52} />
-        <Tooltip content={<ChartTooltip unit={unit} />} cursor={{ stroke: '#334155' }} />
+        <Tooltip content={<ChartTooltip unit={unit} />} cursor={{ stroke: neutrals.cursor }} />
         {showLegend && series.length > 1 && (
           <Legend
             iconType="plainline"
             iconSize={14}
-            wrapperStyle={{ fontSize: 11, paddingTop: 8, color: '#94a3b8' }}
+            wrapperStyle={{ fontSize: 11, paddingTop: 8, color: neutrals.legend }}
           />
         )}
 
@@ -191,7 +208,7 @@ export function TimeSeriesChart({
             stroke={ref.color ?? CHART_COLORS.warning}
             strokeDasharray="4 4"
             strokeOpacity={0.6}
-            label={{ value: ref.label, position: 'insideTopRight', fill: '#64748b', fontSize: 10 }}
+            label={{ value: ref.label, position: 'insideTopRight', fill: neutrals.refLabel, fontSize: 10 }}
           />
         ))}
 
@@ -240,6 +257,9 @@ export function StackedBarChart({
   unit?: string;
   height?: number;
 }) {
+  const neutrals = useChartNeutrals();
+  const AXIS = { stroke: neutrals.axis, fontSize: 11, tickLine: false, axisLine: false } as const;
+
   if (!data || data.length === 0) {
     return <EmptyState title="No data" description="Nothing recorded for this period yet." />;
   }
@@ -252,7 +272,7 @@ export function StackedBarChart({
   return (
     <ResponsiveContainer width="100%" height={height}>
       <BarChart data={rows} margin={{ top: 6, right: 8, bottom: 0, left: -12 }}>
-        <CartesianGrid strokeDasharray="2 4" stroke="#1e2531" vertical={false} />
+        <CartesianGrid strokeDasharray="2 4" stroke={neutrals.grid} vertical={false} />
         <XAxis
           dataKey="timestamp"
           {...AXIS}
@@ -260,7 +280,7 @@ export function StackedBarChart({
           minTickGap={44}
         />
         <YAxis {...AXIS} width={44} allowDecimals={false} />
-        <Tooltip content={<ChartTooltip unit={unit} />} cursor={{ fill: 'rgba(148,163,184,0.06)' }} />
+        <Tooltip content={<ChartTooltip unit={unit} />} cursor={{ fill: neutrals.tooltipCursorFill }} />
         <Legend iconType="square" iconSize={10} wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
         {series.map((s) => (
           <Bar key={s.key} dataKey={s.key} name={s.name} stackId="a" fill={s.color} radius={[2, 2, 0, 0]} />

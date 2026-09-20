@@ -1,3 +1,14 @@
+/**
+ * Colour tokens below resolve through CSS custom properties (defined in
+ * src/index.css for both the dark default and the `.light` override) rather
+ * than literal hex, so a single class toggle on <html> repaints the whole
+ * app — no per-component dark:/light: variants needed. See withOpacity().
+ */
+function withOpacity(variable) {
+  return ({ opacityValue }) =>
+    opacityValue === undefined ? `rgb(var(${variable}))` : `rgb(var(${variable}) / ${opacityValue})`;
+}
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
@@ -18,15 +29,28 @@ export default {
           900: '#0c4a6e',
           950: '#082f49',
         },
-        /* Control-room neutrals: deep, slightly cool, low chroma */
+        /* Control-room neutrals: deep, slightly cool, low chroma (dark theme) —
+           become light neutrals under `.light`, via CSS variables. */
         panel: {
-          950: '#080b11',
-          900: '#0c1017',
-          850: '#11161f',
-          800: '#161c27',
-          700: '#1e2531',
-          600: '#2a3342',
-          500: '#3b4657',
+          950: withOpacity('--c-panel-950'),
+          900: withOpacity('--c-panel-900'),
+          850: withOpacity('--c-panel-850'),
+          800: withOpacity('--c-panel-800'),
+          700: withOpacity('--c-panel-700'),
+          600: withOpacity('--c-panel-600'),
+          500: withOpacity('--c-panel-500'),
+        },
+        /* Text/border neutrals — overrides Tailwind's default slate scale so
+           every existing text-slate and border-slate class stays theme-aware. */
+        slate: {
+          50: withOpacity('--c-slate-50'),
+          100: withOpacity('--c-slate-100'),
+          200: withOpacity('--c-slate-200'),
+          300: withOpacity('--c-slate-300'),
+          400: withOpacity('--c-slate-400'),
+          500: withOpacity('--c-slate-500'),
+          600: withOpacity('--c-slate-600'),
+          700: withOpacity('--c-slate-700'),
         },
         /* Domain accents — one per subsystem, used consistently everywhere */
         solar: '#f5a524',
