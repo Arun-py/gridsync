@@ -1,11 +1,4 @@
 {
-<<<<<<< HEAD
-  "buildCommand": "cd frontend && npm install && npm run build",
-  "outputDirectory": "frontend/build",
-  "devCommand": "cd frontend && npm start",
-  "installCommand": "echo 'Skipping root install'",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
-=======
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
@@ -39,5 +32,4 @@
       ]
     }
   ]
->>>>>>> b45ecbb (GridSync v2: physics-based simulation, rule engine, ML pipeline)
 }
