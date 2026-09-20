@@ -1,0 +1,18 @@
+{
+  "version": "v7",
+  "selection": {
+    "n_estimators": 80,
+    "max_depth": 10,
+    "min_samples_leaf": 8,
+    "validation_macro_f1": 0.815458,
+    "best_validation_macro_f1": 0.893506,
+    "total_tree_nodes": 33676,
+    "node_budget": 60000,
+    "selection_rule": "highest validation macro-F1 among candidates within the 60,000-node portable-export budget"
+  },
+  "randomState": 42,
+  "datasetRows": 149468,
+  "episodes": 132,
+  "trainedAt": "2026-09-17T19:25:43.646325+00:00",
+  "trainedOnSyntheticData": true
+}

@@ -1,9 +1,73 @@
-node_modules
+# ---- Secrets: never commit ----
 .env
-.vercel
-dist
-build
+.env.*
+!.env.example
+*.env
+!*.env.example
+atlas-credentials.env
+*credentials*
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+service-account*.json
+
+# ---- Dependencies ----
+node_modules/
+.pnpm-store/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+
+# ---- Build output ----
+dist/
+build/
+.vite/
+*.tsbuildinfo
+
+# ---- Vercel ----
+.vercel/
+
+# ---- ML artifacts ----
+# Versioned training runs stay local: each portable export is several MB and
+# they accumulate with every retrain. Only the promoted model is committed, at
+# the stable path ml/models/current/, which is what the runtime loads and what
+# Vercel deploys. Regenerate the rest with: npm run ml:pipeline
+ml/models/v*/
+ml/models/**/*.joblib
+ml/models/**/*.pkl
+ml/data/*.csv
+ml/data/*.parquet
+
+# ---- Logs / runtime ----
+logs/
 *.log
+npm-debug.log*
+coverage/
+.nyc_output/
+
+# ---- Editor / OS ----
 .DS_Store
-frontend/build
-frontend/node_modules
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# ---- Project reference material (not source; large binaries) ----
+MICROGRID/
+*.pdf
+*.docx
+Prompt.txt
+
+# ---- Superseded v1 implementation ----
+# The Flask API and JSX frontend are replaced by api/ + worker/ + src/.
+# Kept on disk for reference only; deliberately excluded from the new history.
+# NOTE: backend/config.py contains a hardcoded Atlas password that must be
+# rotated (see docs/SECURITY.md). Excluding it here stops it being re-committed.
+backend/
+frontend/
+legacy/

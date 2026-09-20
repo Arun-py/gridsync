@@ -1,234 +1,502 @@
-# Smart Renewable Energy Microgrid Monitoring System
+# GridSync
 
-A comprehensive web application for monitoring, controlling, and managing renewable energy microgrids with real-time data visualization, smart alerts, and predictive analytics.
+**Intelligent Monitoring, Predictive Maintenance and Optimization for Renewable Microgrids**
 
-## 🌟 Features
+A renewable-microgrid monitoring platform: a physics-based simulation engine feeds a real
+data pipeline through MongoDB, a deterministic rule engine and a Random Forest classifier,
+into a control-room dashboard.
 
-### Real-Time Dashboard
-- Live solar panel data (voltage, current, power output)
-- Battery SOC, voltage, current, temperature monitoring
-- Load consumption per home with status indicators
-- Interactive graphs and gauges for instant visualization
-
-### User Roles
-- **Admin View**: Complete microgrid oversight, per-home monitoring, fault detection, load control
-- **User View**: Personal consumption data, solar vs battery contribution, alerts, simple graphs
-
-### Control Panel (Admin)
-- Remote switching of power sources (solar → load, battery → load)
-- Enable/disable battery charging and discharging
-- Set thresholds and automated responses
-- Load shedding and distribution control
-
-### Smart Alerts & Notifications
-- Low battery, high temperature, load imbalance alerts
-- Maintenance reminders and system health notifications
-- Real-time web notifications with severity levels
-
-### Data Analytics
-- Daily/weekly/monthly usage reports
-- Energy generation vs consumption trends
-- Carbon savings calculator and efficiency metrics
-- Export functionality for reports
-
-### Communication System
-- Admin-to-user messaging
-- Broadcast announcements
-- Priority-based message system
-- Message templates for common notifications
-
-## 🛠 Tech Stack
-
-### Frontend
-- **React.js** with TypeScript
-- **Tailwind CSS** for modern UI
-- **Recharts** for data visualization
-- **Socket.IO Client** for real-time updates
-- **Lucide React** for icons
-
-### Backend
-- **Node.js** with Express
-- **Socket.IO** for real-time communication
-- **MongoDB** with Mongoose
-- **JWT** for authentication
-- **bcryptjs** for password hashing
-
-### Database
-- **MongoDB** for flexible data storage
-- Real-time data sync capabilities
-- Scalable document-based structure
-
-## 📦 Installation
-
-### Prerequisites
-- Node.js (v14 or higher)
-- MongoDB (local or cloud)
-- npm or yarn
-
-### Setup Instructions
-
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd SolarEnergySystemSIH
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm run install-all
-   ```
-
-3. **Environment Configuration**
-   - Copy `.env.example` to `.env`
-   - Update MongoDB connection string
-   - Set JWT secret key
-
-4. **Database Setup**
-   ```bash
-   # Start MongoDB service
-   # Then seed the database
-   node database/seed.js
-   ```
-
-5. **Start the application**
-   ```bash
-   npm run dev
-   ```
-
-   This will start both backend (port 5000) and frontend (port 3000) concurrently.
-
-## 🚀 Usage
-
-### Demo Accounts
-- **Admin**: admin@solar.com / admin123
-- **User**: user@solar.com / user123
-
-### Navigation
-- **Dashboard**: Overview of entire microgrid system
-- **Solar Panel**: Detailed solar generation monitoring
-- **Power Usage**: Load consumption and appliance breakdown
-- **Battery**: Battery management and health monitoring
-- **Faults**: System alerts and maintenance tracking
-- **Messages**: Communication between admin and users
-
-### Key Functionalities
-
-#### For Administrators
-- Monitor all homes in the microgrid
-- Control load distribution and power sources
-- Send messages and alerts to users
-- Manage system maintenance schedules
-- View comprehensive analytics and reports
-
-#### For Users
-- View personal energy consumption
-- Monitor solar generation and battery status
-- Receive system alerts and messages
-- Track energy savings and efficiency
-- Access usage history and trends
-
-## 📊 System Architecture
-
-### Real-Time Data Flow
-1. IoT sensors collect data every 5-10 seconds
-2. Backend processes and validates sensor data
-3. Socket.IO broadcasts updates to connected clients
-4. Frontend updates dashboards in real-time
-5. Database stores historical data for analytics
-
-### Security Features
-- JWT-based authentication
-- Role-based access control
-- Password hashing with bcrypt
-- Input validation and sanitization
-- CORS protection
-
-## 🔧 Configuration
-
-### Environment Variables
-```env
-NODE_ENV=development
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/solar_microgrid
-JWT_SECRET=your_jwt_secret_key
-MQTT_BROKER_URL=mqtt://localhost:1883
-```
-
-### Database Collections
-- **Users**: User accounts and roles
-- **SensorData**: IoT sensor readings
-- **Alerts**: System notifications and faults
-- **Messages**: Admin-user communications
-- **EnergyProfiles**: Aggregated energy data
-
-## 📈 Performance Metrics
-
-### Expected Improvements
-- **15%+ Energy Efficiency** through smart monitoring
-- **Real-time Response** to system faults
-- **Predictive Maintenance** reducing downtime
-- **User Engagement** through intuitive interface
-
-### System Capabilities
-- Handles 1000+ concurrent users
-- Processes sensor data every 5 seconds
-- 99.9% uptime with proper infrastructure
-- Scalable to multiple microgrid sites
-
-## 🌍 Environmental Impact
-
-### Carbon Footprint Reduction
-- Real-time carbon savings calculator
-- Monthly environmental impact reports
-- Tree planting equivalency metrics
-- Renewable energy percentage tracking
-
-### Efficiency Optimization
-- Peak hour load management
-- Smart appliance scheduling
-- Weather-based energy forecasting
-- Automated load balancing
-
-## 🔮 Future Enhancements
-
-### Planned Features
-- Mobile application for iOS/Android
-- Machine learning for predictive analytics
-- Integration with weather APIs
-- Advanced energy trading capabilities
-- IoT device management interface
-
-### Scalability Options
-- Multi-site management
-- Cloud deployment with AWS/Azure
-- Microservices architecture
-- Advanced caching with Redis
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 📞 Support
-
-For technical support or questions:
-- Email: support@solarmicrogrid.com
-- Documentation: [Wiki](link-to-wiki)
-- Issues: [GitHub Issues](link-to-issues)
-
-## 🙏 Acknowledgments
-
-- Smart India Hackathon for the opportunity
-- Open source community for excellent libraries
-- Rural communities inspiring sustainable solutions
+> ### ⚠️ This release runs in DEMO / SIMULATION mode
+>
+> All telemetry shown in the application is generated by the GridSync simulation engine.
+> It is **not** measured hardware data, and the interface labels it as simulated on every
+> page. The ESP32 / Raspberry Pi hardware path is architecturally complete and wired, but
+> no physical devices are connected — see [Realtime mode](#realtime-mode).
+>
+> Financial and CO₂ figures are **estimates** derived from stated, user-editable
+> assumptions. They are not metered readings or audited savings.
 
 ---
 
-**Built with ❤️ for sustainable energy future**
+## Contents
+
+- [What actually works](#what-actually-works)
+- [Architecture](#architecture)
+- [Quick start](#quick-start)
+- [Environment variables](#environment-variables)
+- [Project structure](#project-structure)
+- [Simulation engine](#simulation-engine)
+- [Rule engine vs ML](#rule-engine-vs-ml)
+- [Machine learning](#machine-learning)
+- [Authentication and roles](#authentication-and-roles)
+- [API reference](#api-reference)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [Realtime mode](#realtime-mode)
+- [Known limitations](#known-limitations)
+
+---
+
+## What actually works
+
+Verified end-to-end by `npm run test:acceptance` (55 checks against a live MongoDB Atlas
+cluster):
+
+| Capability | Status |
+|---|---|
+| 1 Hz physics-based telemetry for 4–10 nodes | Working |
+| Persistence to MongoDB Atlas with indexes, TTL and de-duplication | Working |
+| Deterministic rule engine (16 rules) | Working |
+| Random Forest fault classification, 11 classes | Working |
+| Real held-out evaluation metrics | Working |
+| Live dashboard over SSE with polling fallback | Working |
+| Alert Center with acknowledge/resolve and server-side RBAC | Working |
+| Analytics with server-side aggregation | Working |
+| Bill calculator and PDF usage reports | Working |
+| Demo Control (scenarios, speed, interval, node count) | Working |
+| System Health with edge/internet failure distinction | Working |
+| Email/password auth + Google OAuth | Working (Google needs credentials) |
+| English / Tamil interface | Working |
+| ESP32 → MQTT → Raspberry Pi hardware ingest | **Under development** — adapter implemented, no hardware connected |
+
+---
+
+## Architecture
+
+```
+┌──────────────────────── PERSISTENT WORKER (Render / VPS / Pi / laptop) ────────────────────────┐
+│                                                                                                │
+│   TelemetrySource                                                                              │
+│   ├── SimulationSource  ← physics engine, 1 Hz          [active today]                         │
+│   └── MqttSource        ← ESP32 nodes via broker        [under development]                    │
+│                    │                                                                           │
+│                    ▼                                                                           │
+│   Pipeline:  validate → de-duplicate → persist → enrich → snapshot                             │
+│                    │                                    │                                      │
+│                    ├──────────► RULE ENGINE  (deterministic, always runs)                      │
+│                    └──────────► ML INFERENCE (advisory, may be absent)                         │
+│                    │                                                                           │
+│                    ├──► MongoDB Atlas                                                          │
+│                    └──► SSE broadcast ──────────────────────────────┐                          │
+└──────────────────────────────────────────────────────────────────────┼──────────────────────────┘
+                              │                                        │
+                              ▼                                        ▼
+┌──────────── VERCEL ─────────────────┐                   ┌──── BROWSER ─────────────┐
+│  api/**  serverless functions       │◄──── REST ────────│  TelemetryProvider        │
+│  dist/   React SPA                  │                   │  ├── StreamingProvider    │
+└─────────────────────────────────────┘                   │  └── PollingProvider      │
+                                                          └───────────────────────────┘
+```
+
+**Why the worker is separate from Vercel:** a serverless function is invoked, runs, and is
+frozen. It cannot hold a 1 Hz timer, cannot keep per-node rolling history between ticks,
+and cannot hold an MQTT subscription open. The simulator therefore runs as its own
+long-lived process while Vercel serves the web app and the read APIs.
+
+**How they communicate:** both talk to MongoDB Atlas. The worker writes telemetry; the API
+reads it. Control commands from the Demo Control page are written to the database by the
+API and polled by the worker every 2 s — so no inbound network path to the worker is
+required.
+
+---
+
+## Quick start
+
+### Prerequisites
+
+- Node.js 20+
+- Python 3.10+ (only for training the ML model)
+- A MongoDB Atlas cluster
+
+### 1. Install
+
+```bash
+npm install
+```
+
+```bash
+python -m pip install scikit-learn pandas numpy joblib
+```
+
+### 2. Configure
+
+```bash
+cp .env.example .env
+```
+
+Fill in `MONGODB_URI` and generate `AUTH_SECRET`:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
+```
+
+> **MongoDB Atlas → Network Access:** add your IP address, and `0.0.0.0/0` if you intend to
+> deploy to Vercel (serverless functions have dynamic egress IPs). Without this the
+> connection fails during the TLS handshake with `tlsv1 alert internal error`.
+
+### 3. Initialise the database
+
+```bash
+npm run indexes && npm run seed
+```
+
+### 4. Train the model (optional but recommended)
+
+```bash
+npm run ml:pipeline
+```
+
+Without a model the platform runs normally on the rule engine alone; the AI page states
+that no model is available rather than inventing predictions.
+
+### 5. Run
+
+Two processes, in separate terminals:
+
+```bash
+npm run worker
+```
+
+```bash
+npm run dev
+```
+
+Open <http://localhost:3000> and sign in with the seeded credentials from your `.env`.
+
+### 6. Verify
+
+```bash
+npm run healthcheck
+```
+
+```bash
+npm run test && npm run test:acceptance
+```
+
+---
+
+## Environment variables
+
+| Variable | Required | Purpose |
+|---|---|---|
+| `MONGODB_URI` | **Yes** | Atlas connection string |
+| `MONGODB_DB_NAME` | No | Database name (default `gridsync`) |
+| `AUTH_SECRET` | **Yes** | JWT signing key, ≥32 chars |
+| `AUTH_TOKEN_TTL` | No | Token lifetime (default `12h`) |
+| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | No | Enables Google sign-in |
+| `VITE_GOOGLE_CLIENT_ID` | No | Same client id, exposed to the browser |
+| `ADMIN_EMAILS` / `OPERATOR_EMAILS` / `TECHNICIAN_EMAILS` | No | Role allowlists for Google users |
+| `SEED_*_EMAIL` / `SEED_*_PASSWORD` | Dev only | Credentials for `npm run seed` |
+| `GRIDSYNC_SOURCE` | No | `simulation` (default) or `mqtt` |
+| `SIMULATION_INTERVAL_MS` | No | Frame interval, default `1000` |
+| `SIMULATION_SPEED` | No | Simulated-time acceleration, default `60` |
+| `SIMULATION_NODE_COUNT` | No | 4–10, default `4` |
+| `INGEST_TOKEN` | No | Bearer token for `POST /api/ingest`; the route is **disabled** without it |
+| `WORKER_PORT` | No | Worker HTTP/SSE port, default `5000` |
+| `VITE_STREAM_URL` | No | Public SSE URL; without it the browser polls |
+| `MQTT_URL` / `MQTT_USERNAME` / `MQTT_PASSWORD` | No | Hardware path |
+| `TELEMETRY_RETENTION_DAYS` | No | TTL on raw telemetry, default `14` |
+
+**No secret is ever committed.** `.env.example` contains placeholders only, and
+`.gitignore` excludes every `.env` variant.
+
+---
+
+## Project structure
+
+```
+shared/            Isomorphic domain code — no Node or browser dependencies
+  types.ts           Telemetry, alert, prediction and health contracts
+  nodes.config.ts    Data-driven node catalogue (add a node here, nothing else)
+  constants.ts       Every rule threshold; no magic numbers elsewhere
+  physics.ts         Solar, battery and load models + simulation assumptions
+  validation.ts      Sensor-fault detection on ingest
+  billing.ts         Cost and CO₂ estimation with exposed formulas
+  simulation/        Simulation engine and scenario modifiers
+  rules/             Rule definitions and the evaluation engine
+  ml/                Feature extraction and the portable Random Forest evaluator
+
+server/            Node-only code, shared by api/ and worker/
+  env.ts             The only place process.env is read
+  db.ts              Mongo client with serverless connection reuse
+  repositories.ts    All queries, all bounded
+  auth.ts            JWT, bcrypt, permission matrix
+  pipeline.ts        The processing chain
+  ml.ts              Model loading and inference
+  logger.ts          Structured logging with secret redaction
+
+api/               Vercel serverless functions
+worker/            The persistent process (simulator + SSE + control polling)
+src/               React + TypeScript frontend
+ml/                Python training, evaluation and model registry
+scripts/           Seed, indexes, dataset generation, health check, acceptance test
+tests/             Vitest suites
+```
+
+---
+
+## Simulation engine
+
+One centralised engine produces all telemetry. **Nothing in the React tree ever invents a
+number.**
+
+Every tick resolves in the order a real microgrid does:
+
+1. advance the simulated clock
+2. compute environment (irradiance, ambient temperature)
+3. compute generation from the environment
+4. compute demand from the time-of-day profile
+5. **settle the battery against the resulting energy balance**
+6. emit frames, then apply network impairments
+
+Step 5 matters: the battery is a *consequence* of the energy balance, not an independent
+random walk. Surplus charges it, deficit discharges it, and SOC integrates by coulomb
+counting.
+
+### Scenarios
+
+A scenario applies **coherent modifiers to the physics** — never a direct override of an
+output value. A solar fault derates the array; the reduced current, reduced power and
+falling efficiency all fall out of the model. If it simply wrote `power = 3`, the
+lux/voltage/current relationship would break and the rule engine would be detecting a lie.
+
+`NORMAL` · `SOLAR_FAULT` · `BATTERY_FAULT` · `OVERLOAD` · `NETWORK_FAILURE` · `BROWNOUT` ·
+`SENSOR_FAILURE` · `PANEL_SOILING` · `BATTERY_OVERHEATING` · `HIGH_DEMAND` · `NIGHT_MODE`
+
+### Simulation assumptions
+
+Documented in full at the top of `shared/physics.ts`. In summary: irradiance is a
+clear-sky sinusoid in lux used as a linear proxy for W/m²; PV output uses the standard
+linear temperature-derating form (β = 0.4 %/°C); the battery is a coulomb-counting model
+with a piecewise-linear OCV curve for a 12 V lead-acid bank; round-trip efficiency is flat
+90 % charge / 95 % discharge; inverter conversion is flat 92 %. **None of these constants
+were measured from physical hardware.**
+
+---
+
+## Rule engine vs ML
+
+These are deliberately separate systems, and the distinction is enforced throughout the UI.
+
+| | Rule engine | ML model |
+|---|---|---|
+| Nature | Deterministic, auditable | Statistical |
+| Runs | Always, on every frame | When a model is loaded |
+| Labelled | `DETECTED` | `PREDICTED` |
+| Can it be overridden? | **No** | It is advisory only |
+| Thresholds | `shared/constants.ts` | Learned |
+
+**The model never suppresses a rule.** If inference fails or no model exists, the rule
+engine continues unaffected and the AI page says so.
+
+### Sensor fault vs communication fault
+
+| | Sensor fault | Communication fault |
+|---|---|---|
+| What happened | Data **arrived**, but is physically impossible | Data **did not arrive**, is stale, or timed out |
+| Example | DS18B20 reporting −127 °C | Node heartbeat missing for 20 s |
+| Detected by | `shared/validation.ts` on ingest | `shared/rules/engine.ts` from absence of data |
+| Consequence | Frame stored but flagged, excluded from analytics and training | Node transitions ONLINE → STALE → OFFLINE |
+
+These demand different responses from an operator, so they are never conflated.
+
+---
+
+## Machine learning
+
+- **Algorithm:** `RandomForestClassifier` (scikit-learn), 11 fault classes
+- **Training data:** synthetic, generated by GridSync's own physics engine
+- **Inference:** the fitted forest is exported to portable JSON and evaluated in TypeScript,
+  so no Python runtime is needed on Vercel or in the worker
+
+### Current metrics
+
+Computed by `ml/evaluation/evaluate.py` on a held-out test split. Model **v6**:
+
+| Metric | Value |
+|---|---|
+| Accuracy | 0.871 |
+| Macro precision | 0.824 |
+| Macro recall | 0.877 |
+| Macro F1 | 0.826 |
+| Train / validation / test rows | 92,228 / 27,623 / 29,617 |
+
+Per-class F1 ranges from **1.00** (`BATTERY_OVERHEAT`) down to **0.32**
+(`COMMUNICATION_FAULT`) — the weak classes are shown in the UI rather than hidden.
+
+> **These numbers describe how separable the simulated scenario regimes are.** They are not
+> validated real-world fault-detection performance and must not be cited as such. Replace
+> them with metrics from labelled hardware telemetry before making any performance claim.
+
+### Avoiding leakage
+
+Telemetry at 1 Hz is massively autocorrelated — row *t* and row *t+1* are nearly identical.
+A random row-wise split would put near-duplicates of test rows into training and report a
+fantasy accuracy. Every row therefore carries an episode id, and the split is **grouped by
+episode and stratified by scenario**, so no simulation run contributes to more than one
+split while every scenario is represented in all three.
+
+The scenario id is **never** a feature. The model sees only sensor-derived values.
+
+### Train/inference parity
+
+`train_classifier.py` exports a sample of held-out rows together with sklearn's own
+predictions. `tests/ml.test.ts` replays them through the TypeScript evaluator and asserts
+identical results — currently **0 mismatches, max probability delta 7.5 × 10⁻⁶**. Without
+this, the two inference paths could diverge silently and every prediction would be
+confidently wrong.
+
+### Commands
+
+```bash
+npm run ml:generate    # build the labelled dataset from the physics engine
+```
+```bash
+npm run ml:train       # train, select under a size budget, export joblib + JSON
+```
+```bash
+npm run ml:evaluate    # real held-out metrics -> ml/models/metrics.json
+```
+```bash
+python ml/inference/predict.py --verify-portable
+```
+
+---
+
+## Authentication and roles
+
+JWT (HS256) with bcrypt password hashing. Google OAuth verifies the ID token signature and
+audience server-side.
+
+| Permission | ADMIN | OPERATOR | TECHNICIAN | VIEWER |
+|---|:--:|:--:|:--:|:--:|
+| View dashboard / analytics / AI | ✓ | ✓ | ✓ | ✓ |
+| Diagnostics & maintenance | ✓ | | ✓ | |
+| Acknowledge alerts | ✓ | ✓ | ✓ | |
+| Resolve alerts | ✓ | ✓ | | |
+| Simulator control | ✓ | ✓ | | |
+| Generate reports | ✓ | ✓ | ✓ | |
+| Settings / user management | ✓ | | | |
+
+**Authorisation is enforced server-side.** The UI hides controls a role cannot use, but
+every privileged route calls `requireRole` — a Viewer POSTing directly to
+`/api/alerts/:id/acknowledge` receives 403.
+
+Google-authenticated users receive **VIEWER** unless their address appears in an env
+allowlist. Privileged emails are never hardcoded, and the role is re-evaluated at each
+sign-in.
+
+---
+
+## API reference
+
+See [docs/API.md](docs/API.md) for full request/response examples.
+
+| Method | Route | Permission |
+|---|---|---|
+| `POST` | `/api/auth/login` | public |
+| `POST` | `/api/auth/signup` | public (creates VIEWER) |
+| `POST` | `/api/auth/google` | public |
+| `GET` | `/api/auth/me` | authenticated |
+| `GET` | `/api/nodes` | authenticated |
+| `GET` | `/api/telemetry/latest` | authenticated |
+| `GET` | `/api/telemetry/history` | authenticated |
+| `GET` | `/api/alerts` | authenticated |
+| `POST` | `/api/alerts/:id/acknowledge` | `alerts:acknowledge` |
+| `POST` | `/api/alerts/:id/resolve` | `alerts:resolve` |
+| `GET` | `/api/predictions` | authenticated |
+| `GET` | `/api/analytics` | `view:analytics` |
+| `GET` | `/api/system-health` | authenticated |
+| `GET` | `/api/simulation/state` | authenticated |
+| `POST` | `/api/simulation/control` | `simulation:control` |
+| `GET` `POST` | `/api/usage` | `reports:generate` |
+| `GET` `PATCH` | `/api/users` | `users:manage` |
+| `POST` | `/api/ingest` | `INGEST_TOKEN` bearer |
+| `GET` | `/api/health` | public |
+
+---
+
+## Testing
+
+```bash
+npm run test              # 139 unit tests
+```
+```bash
+npm run test:acceptance   # 55-check end-to-end test against a real database
+```
+```bash
+npm run typecheck         # strict TypeScript, zero errors
+```
+
+The acceptance test walks the complete specified flow: start simulation → telemetry to
+MongoDB → trigger SOLAR_FAULT → verify telemetry changes *coherently* → rule fires → ML
+predicts → trigger NETWORK_FAILURE → node goes stale → edge mode → return to NORMAL →
+recovery → usage aggregation → bill estimate.
+
+---
+
+## Deployment
+
+See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for step-by-step instructions.
+
+**Summary:**
+
+| Component | Where | Why |
+|---|---|---|
+| React SPA + `api/**` | **Vercel** | Static assets and short-lived request handlers |
+| Simulator / worker | **Render, Railway, Fly.io, a VPS, a Raspberry Pi, or a laptop** | Needs a persistent process |
+| Database | **MongoDB Atlas** | Shared by both |
+
+A `render.yaml` is included for one-click worker deployment.
+
+---
+
+## Realtime mode
+
+The hardware path is implemented and wired, but no devices are connected — the interface
+states this rather than showing a green tick.
+
+```
+ESP32 nodes ──MQTT──► Raspberry Pi 5 broker ──► MqttSource ──► Pipeline ──► MongoDB ──► API ──► Dashboard
+```
+
+To switch when hardware is ready:
+
+1. set `GRIDSYNC_SOURCE=mqtt`
+2. point `MQTT_URL` at the broker on the Pi
+3. flash firmware publishing the documented payload to `gridsync/<nodeId>`
+
+**Nothing else changes.** The pipeline, rule engine, ML layer, API and every page consume
+`TelemetryFrame` and cannot tell the difference. Devices that can reach HTTPS but not the
+broker can `POST /api/ingest` instead.
+
+---
+
+## Known limitations
+
+1. **No hardware is connected.** All telemetry is simulated.
+2. **ML metrics reflect synthetic data.** They measure scenario separability, not
+   real-world fault detection.
+3. **`COMMUNICATION_FAULT` and `ABNORMAL_CONSUMPTION` classify poorly** (F1 0.32 and 0.60).
+   A stale frame looks like a normal frame to a per-frame classifier; detecting it reliably
+   needs sequence-level features the current vector does not carry. The deterministic
+   communication rules handle this case correctly and are not affected.
+4. **No battery state-of-health figure is shown.** A credible SoH requires capacity testing
+   over many cycles against a known reference, which has not been performed. The measured
+   quantities it would derive from are shown instead.
+5. **No physical control path.** Load-shedding suggestions are labelled
+   "Recommended / Simulated Action". No relay exists and none is claimed to operate.
+6. **Rate limiting is per serverless instance**, not global — real protection against a
+   single client, but not a substitute for a shared store.
+7. **Grid import is not metered.** The bill calculator estimates it as consumption minus
+   generation unless you enter a meter reading.
+8. **Tamil translation covers navigation and common labels only.** Detailed engineering text
+   falls back to English rather than shipping an unreviewed machine translation of
+   safety-relevant content.
+9. **Simulation constants are engineering estimates**, not measurements from the prototype.
+
+---
+
+## Licence
+
+MIT

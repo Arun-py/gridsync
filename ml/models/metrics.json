@@ -1,0 +1,314 @@
+{
+  "modelVersion": "v7",
+  "trainedAt": "2026-09-17T19:25:46.384815+00:00",
+  "algorithm": "RandomForestClassifier (scikit-learn)",
+  "trainedOnSyntheticData": true,
+  "datasetSize": 149468,
+  "trainSize": 92228,
+  "validationSize": 27623,
+  "testSize": 29617,
+  "splitStrategy": "Grouped by simulation episode and stratified by scenario: episodes are bucketed per scenario and divided 60/20/20, so no episode spans two splits (preventing leakage between autocorrelated neighbouring rows) while every scenario is represented in all three splits.",
+  "accuracy": 0.8707,
+  "macroPrecision": 0.8238,
+  "macroRecall": 0.8771,
+  "macroF1": 0.8255,
+  "perClass": {
+    "ABNORMAL_CONSUMPTION": {
+      "precision": 0.4351,
+      "recall": 0.9821,
+      "f1": 0.603,
+      "support": 1170
+    },
+    "BATTERY_FAULT": {
+      "precision": 0.959,
+      "recall": 1.0,
+      "f1": 0.9791,
+      "support": 585
+    },
+    "BATTERY_OVERHEAT": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 780
+    },
+    "BROWNOUT": {
+      "precision": 0.9931,
+      "recall": 0.4628,
+      "f1": 0.6314,
+      "support": 1560
+    },
+    "COMMUNICATION_FAULT": {
+      "precision": 0.248,
+      "recall": 0.4587,
+      "f1": 0.322,
+      "support": 824
+    },
+    "LOW_SOC": {
+      "precision": 0.9737,
+      "recall": 0.9898,
+      "f1": 0.9817,
+      "support": 1568
+    },
+    "NORMAL": {
+      "precision": 0.969,
+      "recall": 0.8789,
+      "f1": 0.9218,
+      "support": 19893
+    },
+    "OVERLOAD": {
+      "precision": 0.661,
+      "recall": 0.9885,
+      "f1": 0.7922,
+      "support": 785
+    },
+    "SENSOR_FAULT": {
+      "precision": 0.9139,
+      "recall": 0.9877,
+      "f1": 0.9494,
+      "support": 892
+    },
+    "SOLAR_SHADING": {
+      "precision": 1.0,
+      "recall": 0.9,
+      "f1": 0.9474,
+      "support": 780
+    },
+    "SOLAR_SOILING": {
+      "precision": 0.9091,
+      "recall": 1.0,
+      "f1": 0.9524,
+      "support": 780
+    }
+  },
+  "confusionMatrix": [
+    [
+      1149,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      21,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      585,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      780,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      200,
+      0,
+      0,
+      722,
+      0,
+      0,
+      339,
+      299,
+      0,
+      0,
+      0
+    ],
+    [
+      189,
+      0,
+      0,
+      0,
+      378,
+      42,
+      215,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1552,
+      0,
+      0,
+      16,
+      0,
+      0
+    ],
+    [
+      1100,
+      25,
+      0,
+      0,
+      1146,
+      0,
+      17484,
+      71,
+      67,
+      0,
+      0
+    ],
+    [
+      3,
+      0,
+      0,
+      5,
+      0,
+      0,
+      1,
+      776,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      4,
+      7,
+      881,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      702,
+      78
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      780
+    ]
+  ],
+  "labels": [
+    "ABNORMAL_CONSUMPTION",
+    "BATTERY_FAULT",
+    "BATTERY_OVERHEAT",
+    "BROWNOUT",
+    "COMMUNICATION_FAULT",
+    "LOW_SOC",
+    "NORMAL",
+    "OVERLOAD",
+    "SENSOR_FAULT",
+    "SOLAR_SHADING",
+    "SOLAR_SOILING"
+  ],
+  "featureImportances": [
+    {
+      "feature": "temperature",
+      "importance": 0.137742
+    },
+    {
+      "feature": "soc",
+      "importance": 0.121568
+    },
+    {
+      "feature": "voltage",
+      "importance": 0.115977
+    },
+    {
+      "feature": "loadW",
+      "importance": 0.091037
+    },
+    {
+      "feature": "efficiencyRatio",
+      "importance": 0.087348
+    },
+    {
+      "feature": "energyImbalanceW",
+      "importance": 0.083769
+    },
+    {
+      "feature": "powerRollingMean",
+      "importance": 0.077894
+    },
+    {
+      "feature": "power",
+      "importance": 0.061981
+    },
+    {
+      "feature": "current",
+      "importance": 0.05527
+    },
+    {
+      "feature": "lux",
+      "importance": 0.042736
+    },
+    {
+      "feature": "generationW",
+      "importance": 0.040048
+    },
+    {
+      "feature": "solarElevation",
+      "importance": 0.028008
+    },
+    {
+      "feature": "temperatureTrend",
+      "importance": 0.020575
+    },
+    {
+      "feature": "voltageTrend",
+      "importance": 0.013458
+    },
+    {
+      "feature": "currentTrend",
+      "importance": 0.011959
+    },
+    {
+      "feature": "socTrend",
+      "importance": 0.010453
+    },
+    {
+      "feature": "powerRateOfChange",
+      "importance": 0.000178
+    }
+  ],
+  "notes": [
+    "Model trained on SYNTHETIC telemetry generated by GridSync's own physics simulator. These metrics measure how separable the simulated scenario regimes are. They are NOT validated real-world fault-detection performance and must not be cited as such. Replace with metrics from labelled hardware telemetry before making any performance claim."
+  ]
+}

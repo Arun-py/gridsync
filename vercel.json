@@ -1,7 +1,43 @@
 {
+<<<<<<< HEAD
   "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/build",
   "devCommand": "cd frontend && npm start",
   "installCommand": "echo 'Skipping root install'",
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+=======
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "functions": {
+    "api/**/*.ts": {
+      "runtime": "@vercel/node@3.2.29",
+      "memory": 512,
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, max-age=0" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+      ]
+    }
+  ]
+>>>>>>> b45ecbb (GridSync v2: physics-based simulation, rule engine, ML pipeline)
 }

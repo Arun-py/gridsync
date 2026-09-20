@@ -1,0 +1,264 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * GridSync design system — renewable-energy control room.
+ *
+ * Deliberately NOT a generic SaaS admin theme:
+ *   - deep neutral background, never pure black, never white cards on grey
+ *   - one accent per subsystem (solar amber, battery green, AC cyan, DC violet)
+ *     used consistently in every chart, diagram and badge
+ *   - severity colours reserved exclusively for severity — never decoration
+ *   - tabular-figure numerics so readings do not jitter as digits change
+ *   - restrained radii (4-6px) and hairline borders; no glassmorphism, no
+ *     gradient washes, no oversized rounded cards
+ */
+
+@layer base {
+  :root {
+    color-scheme: dark;
+
+    --grid-bg: 8 11 17;
+    --grid-surface: 12 16 23;
+    --grid-raised: 17 22 31;
+    --grid-border: 30 37 49;
+    --grid-border-strong: 42 51 66;
+  }
+
+  * {
+    border-color: rgb(var(--grid-border));
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-panel-950 text-slate-200 antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    /* Faint grid, echoing a schematic. Low enough not to compete with data. */
+    background-image:
+      linear-gradient(rgba(148, 163, 184, 0.022) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148, 163, 184, 0.022) 1px, transparent 1px);
+    background-size: 44px 44px;
+    background-attachment: fixed;
+  }
+
+  /* Readings must not shift horizontally as digits change. */
+  .tabular,
+  .metric-value {
+    font-variant-numeric: tabular-nums;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-panel-900;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-panel-600 rounded-full border-2 border-panel-900;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-panel-500;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary-500/70 ring-offset-2 ring-offset-panel-950;
+  }
+}
+
+@layer components {
+  /* ---- surfaces ---------------------------------------------------- */
+  .panel {
+    @apply rounded-md border border-panel-700 bg-panel-900/80 backdrop-blur-[2px];
+  }
+
+  .panel-raised {
+    @apply rounded-md border border-panel-700 bg-panel-850;
+  }
+
+  .panel-header {
+    @apply flex items-center justify-between gap-3 border-b border-panel-700 px-4 py-3;
+  }
+
+  .panel-title {
+    @apply text-[13px] font-semibold uppercase tracking-[0.08em] text-slate-400;
+  }
+
+  .panel-body {
+    @apply p-4;
+  }
+
+  /* ---- metrics ------------------------------------------------------ */
+  .metric-label {
+    @apply text-2xs font-medium uppercase tracking-[0.1em] text-slate-500;
+  }
+
+  .metric-value {
+    @apply text-2xl font-semibold leading-none text-slate-50;
+  }
+
+  .metric-unit {
+    @apply ml-1 text-sm font-normal text-slate-500;
+  }
+
+  /* ---- buttons ------------------------------------------------------ */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded border px-3 py-2
+           text-sm font-medium transition-colors duration-150
+           disabled:cursor-not-allowed disabled:opacity-40;
+  }
+
+  .btn-primary {
+    @apply border-primary-500 bg-primary-600 text-white hover:bg-primary-500;
+  }
+
+  .btn-secondary {
+    @apply border-panel-600 bg-panel-800 text-slate-200 hover:border-panel-500 hover:bg-panel-700;
+  }
+
+  .btn-ghost {
+    @apply border-transparent bg-transparent text-slate-400 hover:bg-panel-800 hover:text-slate-200;
+  }
+
+  .btn-danger {
+    @apply border-red-600/60 bg-red-600/20 text-red-300 hover:bg-red-600/25;
+  }
+
+  .btn-sm {
+    @apply px-2.5 py-1.5 text-xs;
+  }
+
+  /* ---- form controls ------------------------------------------------ */
+  .input,
+  .select {
+    @apply w-full rounded border border-panel-600 bg-panel-950/60 px-3 py-2 text-sm
+           text-slate-100 placeholder:text-slate-600
+           focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500/40;
+  }
+
+  .label {
+    @apply mb-1.5 block text-xs font-medium text-slate-400;
+  }
+
+  /* ---- badges ------------------------------------------------------- */
+  .badge {
+    @apply inline-flex items-center gap-1.5 rounded border px-2 py-0.5
+           text-2xs font-semibold uppercase tracking-wider;
+  }
+
+  .badge-info {
+    @apply border-sky-500/30 bg-sky-500/10 text-sky-300;
+  }
+  .badge-warning {
+    @apply border-amber-500/30 bg-amber-500/10 text-amber-300;
+  }
+  .badge-critical {
+    @apply border-red-500/40 bg-red-500/20 text-red-300;
+  }
+  .badge-ok {
+    @apply border-emerald-500/30 bg-emerald-500/10 text-emerald-300;
+  }
+  .badge-neutral {
+    @apply border-panel-600 bg-panel-800 text-slate-400;
+  }
+
+  /* ---- status dot --------------------------------------------------- */
+  .status-dot {
+    @apply inline-block h-1.5 w-1.5 shrink-0 rounded-full;
+  }
+
+  /* ---- data table --------------------------------------------------- */
+  .data-table {
+    @apply w-full border-collapse text-sm;
+  }
+  .data-table thead th {
+    @apply border-b border-panel-700 px-3 py-2 text-left text-2xs font-semibold
+           uppercase tracking-wider text-slate-500;
+  }
+  .data-table tbody td {
+    @apply border-b border-panel-800 px-3 py-2.5 text-slate-300;
+  }
+  .data-table tbody tr:hover {
+    @apply bg-panel-850/60;
+  }
+
+  /* ---- navigation --------------------------------------------------- */
+  .nav-group-label {
+    @apply px-3 pb-1.5 pt-4 text-2xs font-semibold uppercase tracking-[0.12em] text-slate-600;
+  }
+
+  .nav-link {
+    @apply flex items-center gap-2.5 rounded px-3 py-2 text-sm text-slate-400
+           transition-colors duration-150 hover:bg-panel-800 hover:text-slate-100;
+  }
+
+  .nav-link-active {
+    @apply bg-primary-600/10 text-primary-300;
+    box-shadow: inset 2px 0 0 theme('colors.primary.500');
+  }
+
+  /* ---- simulation banner -------------------------------------------- */
+  .sim-chip {
+    @apply inline-flex items-center gap-1.5 rounded border border-amber-500/40
+           bg-amber-500/10 px-2 py-0.5 text-2xs font-bold uppercase tracking-[0.1em]
+           text-amber-300;
+  }
+
+  /* ---- skeleton ----------------------------------------------------- */
+  .skeleton {
+    @apply animate-pulse rounded bg-panel-800;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Animated dashes along a power-flow path. */
+  .flow-line {
+    stroke-dasharray: 5 6;
+    animation: flow-dash 1s linear infinite;
+  }
+  .flow-line-reverse {
+    stroke-dasharray: 5 6;
+    animation: flow-dash 1s linear infinite reverse;
+  }
+}
+
+@keyframes flow-dash {
+  to {
+    stroke-dashoffset: -22;
+  }
+}
+
+/* Respect a user's reduced-motion preference: the flow animation is
+   decorative, and direction is also conveyed by an arrowhead and a label. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Recharts overrides so charts inherit the control-room palette. */
+.recharts-cartesian-grid line {
+  stroke: rgb(var(--grid-border));
+}
+.recharts-text {
+  fill: theme('colors.slate.500');
+  font-size: 11px;
+}
+.recharts-tooltip-wrapper {
+  outline: none;
+}

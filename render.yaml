@@ -1,17 +1,59 @@
+# Render blueprint for the GridSync persistent worker.
+#
+# This deploys ONLY the simulator/worker. The web app and API deploy to Vercel;
+# the two communicate through MongoDB Atlas.
+#
+# New -> Blueprint in the Render dashboard, point at this repository, then fill
+# in the variables marked `sync: false` (Render will prompt for them).
+#
+# NOTE ON THE FREE PLAN: free instances sleep after inactivity. A sleeping
+# worker stops producing telemetry; nodes then correctly age to STALE and
+# OFFLINE and the dashboard reports the degraded state. For a continuously live
+# demonstration use a paid instance or run the worker locally.
+
 services:
-  - type: web
-    name: gridsync-backend
-    env: node
-    region: singapore
+  - type: worker
+    name: gridsync-worker
+    runtime: node
     plan: free
-    buildCommand: npm install
-    startCommand: node backend/server.js
+    region: singapore
+    branch: main
+
+    buildCommand: npm ci
+    startCommand: npm run worker
+
     envVars:
-      - key: NODE_ENV
-        value: production
-      - key: PORT
-        value: 10000
+      # --- required, set in the dashboard ---
       - key: MONGODB_URI
         sync: false
-      - key: JWT_SECRET
+      - key: AUTH_SECRET
         sync: false
+      - key: INGEST_TOKEN
+        sync: false
+
+      # --- database ---
+      - key: MONGODB_DB_NAME
+        value: gridsync
+      - key: TELEMETRY_RETENTION_DAYS
+        value: "14"
+
+      # --- simulation ---
+      - key: GRIDSYNC_SOURCE
+        value: simulation
+      - key: SIMULATION_INTERVAL_MS
+        value: "1000"
+      # 60 = one simulated hour per real minute, so a demo sees a full solar day.
+      - key: SIMULATION_SPEED
+        value: "60"
+      - key: SIMULATION_SCENARIO
+        value: NORMAL
+      - key: SIMULATION_NODE_COUNT
+        value: "4"
+
+      # --- runtime ---
+      - key: NODE_ENV
+        value: production
+      - key: LOG_LEVEL
+        value: info
+      - key: WORKER_PORT
+        value: "5000"
