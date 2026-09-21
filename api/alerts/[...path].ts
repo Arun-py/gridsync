@@ -4,10 +4,16 @@
  * implementations. One file per route would push the deployment over
  * Vercel's serverless function cap.
  *
- * `[...path].ts` is a REQUIRED catch-all: Vercel's (non-Next.js) function
- * router does not match it against the bare `/api/alerts` path, only
- * `/api/alerts/*`. vercel.json rewrites the bare path to `/api/alerts/list`
- * so the list route is still reachable through this one function.
+ * `[...path].ts` LOOKS like a catch-all but, outside Next.js, Vercel's
+ * generated function route only ever matches ONE path segment after
+ * /api/alerts/ (confirmed against the actual deployed routing manifest —
+ * a bare /api/alerts and a two-segment /api/alerts/:id/acknowledge both
+ * 404 before this function is even invoked). vercel.json works around
+ * this by rewriting both shapes into a single encoded segment:
+ *   /api/alerts                    -> /api/alerts/list
+ *   /api/alerts/:id/acknowledge    -> /api/alerts/:id~acknowledge
+ *   /api/alerts/:id/resolve        -> /api/alerts/:id~resolve
+ * which this dispatcher decodes below.
  */
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
@@ -15,7 +21,8 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { acknowledgeHandler, listHandler, resolveHandler } from '../_lib/routes/alerts.js';
 
 export default async function (req: VercelRequest, res: VercelResponse): Promise<void> {
-  const segments = ([] as string[]).concat((req.query.path as string | string[]) ?? []);
+  const raw = ([] as string[]).concat((req.query.path as string | string[]) ?? []);
+  const segments = raw.length === 1 ? raw[0].split('~') : raw;
 
   if (segments.length === 0 || (segments.length === 1 && segments[0] === 'list')) {
     await listHandler(req, res);

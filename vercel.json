@@ -12,6 +12,8 @@
   },
   "rewrites": [
     { "source": "/api/alerts", "destination": "/api/alerts/list" },
+    { "source": "/api/alerts/:id/acknowledge", "destination": "/api/alerts/:id~acknowledge" },
+    { "source": "/api/alerts/:id/resolve", "destination": "/api/alerts/:id~resolve" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ],
   "headers": [
