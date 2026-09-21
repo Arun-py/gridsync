@@ -21,13 +21,11 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { acknowledgeHandler, listHandler, resolveHandler } from '../_lib/routes/alerts.js';
 
 export default async function (req: VercelRequest, res: VercelResponse): Promise<void> {
-  const raw = ([] as string[]).concat((req.query.path as string | string[]) ?? []);
+  // Vercel names a [...path] catch-all's query key literally "...path" (with
+  // the ellipsis) rather than "path" — confirmed against the deployed
+  // request object, not documented behaviour worth relying on blindly again.
+  const raw = ([] as string[]).concat((req.query['...path'] as string | string[]) ?? []);
   const segments = raw.length === 1 ? raw[0].split('~') : raw;
-
-  if (req.query.debug === '1') {
-    res.status(200).json({ url: req.url, query: req.query, raw, segments });
-    return;
-  }
 
   if (segments.length === 0 || (segments.length === 1 && segments[0] === 'list')) {
     await listHandler(req, res);
