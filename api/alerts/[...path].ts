@@ -24,6 +24,11 @@ export default async function (req: VercelRequest, res: VercelResponse): Promise
   const raw = ([] as string[]).concat((req.query.path as string | string[]) ?? []);
   const segments = raw.length === 1 ? raw[0].split('~') : raw;
 
+  if (req.query.debug === '1') {
+    res.status(200).json({ url: req.url, query: req.query, raw, segments });
+    return;
+  }
+
   if (segments.length === 0 || (segments.length === 1 && segments[0] === 'list')) {
     await listHandler(req, res);
     return;
