@@ -11,6 +11,7 @@
     }
   },
   "rewrites": [
+    { "source": "/api/alerts", "destination": "/api/alerts/list" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ],
   "headers": [
